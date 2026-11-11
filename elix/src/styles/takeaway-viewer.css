@@ -1,0 +1,327 @@
+/* THE ELIX: Take Away Menu book. A plain cream frame around the original menu images.
+   Nothing is drawn over the images: the controls sit above and below them, never on top. */
+
+.tm-screen {
+  --tm-bg: #f7f0e2;
+  --tm-card: #fffbf3;
+  --tm-line: #e4d2b1;
+  --tm-brown: #5b3519;
+  --tm-muted: #7a6150;
+  --tm-gold: #c4923a;
+
+  background: var(--tm-bg);
+  color: var(--tm-brown);
+  min-height: 100%;
+  padding: 24px 0 48px;
+}
+
+.tm-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.tm-viewer {
+  scroll-margin-top: calc(var(--nav-h) + 16px);
+}
+
+/* ---------- controls ---------- */
+.tm-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 760px;
+  margin: 0 auto 12px;
+}
+
+.tm-nav {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.tm-zoom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.tm-count {
+  margin: 0;
+  color: var(--tm-muted);
+  font-size: 0.95rem;
+  text-align: center;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.tm-zoom-level {
+  min-width: 3.2em;
+  color: var(--tm-muted);
+  font-size: 0.9rem;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.tm-hint {
+  margin: 0 auto 12px;
+  max-width: 760px;
+  color: var(--tm-muted);
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.tm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--tm-gold);
+  border-radius: 999px;
+  background: var(--tm-card);
+  color: var(--tm-brown);
+  font: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.tm-btn:hover:not(:disabled) {
+  background: #6e3c18;
+  border-color: #6e3c18;
+  color: #f8ebd2;
+}
+
+.tm-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.tm-btn:focus-visible,
+.tm-stage:focus-visible,
+.tm-open a:focus-visible {
+  outline: 2px solid var(--tm-gold);
+  outline-offset: 2px;
+}
+
+/* ---------- the page (the touch surface) ---------- */
+.tm-stage {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+  /* clip, not hidden: the page is panned and slid inside this frame, but the frame is not a scroll container,
+     so a vertical swipe on the image scrolls the website normally (hidden is kept for older browsers) */
+  overflow: hidden;
+  overflow: clip;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  border-radius: 4px;
+}
+
+.tm-slide {
+  will-change: transform;
+}
+
+.tm-canvas {
+  position: relative;
+  width: 100%;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.tm-page {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(91, 53, 25, 0.12);
+  background: var(--tm-card);
+  -webkit-user-drag: none;
+}
+
+/* subtle entry, so a turned page settles in rather than jumping */
+.tm-enter-next {
+  animation: tm-enter-next 240ms ease-out;
+}
+
+.tm-enter-prev {
+  animation: tm-enter-prev 240ms ease-out;
+}
+
+@keyframes tm-enter-next {
+  from {
+    transform: translateX(8%);
+    opacity: 0.5;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes tm-enter-prev {
+  from {
+    transform: translateX(-8%);
+    opacity: 0.5;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* ---------- full size link ---------- */
+.tm-open {
+  margin: 16px 0 0;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.tm-open a {
+  color: var(--tm-brown);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+  .tm-btn span {
+    display: none;
+  }
+
+  .tm-btn {
+    padding: 0 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tm-enter-next,
+  .tm-enter-prev {
+    animation: none;
+  }
+}
+
+/* ---------- OPEN FULL MENU (opens the same viewer full screen) ---------- */
+.tm-open-full {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 360px;
+  min-height: 48px;
+  margin: 0 auto 14px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 999px;
+  background: #6e3c18;
+  color: #f8ebd2;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  cursor: pointer;
+}
+
+.tm-open-full:hover {
+  background: #5b3519;
+}
+
+.tm-open-full:focus-visible {
+  outline: 2px solid var(--tm-gold);
+  outline-offset: 3px;
+}
+
+/* full screen: the same viewer, fixed over the site; the menu itself scrolls vertically inside it */
+.tm-viewer.is-full {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  background: var(--tm-bg);
+  padding: calc(env(safe-area-inset-top, 0px) + 12px) 16px calc(env(safe-area-inset-bottom, 0px) + 32px);
+}
+
+.tm-full-bar {
+  display: flex;
+  justify-content: flex-end;
+  max-width: 760px;
+  margin: 0 auto 12px;
+}
+
+.tm-close {
+  background: var(--tm-card);
+}
+
+/* ---------- search ---------- */
+.tm-search {
+  --bg: var(--tm-card);
+  --text: var(--tm-brown);
+  --line: var(--tm-line);
+  --muted: var(--tm-muted);
+  --accent: var(--tm-gold);
+  max-width: 760px;
+  margin: 0 auto 14px;
+}
+
+.tm-results {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tm-result {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 12px;
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 14px;
+  border: 1px solid var(--tm-line);
+  border-radius: 12px;
+  background: var(--tm-card);
+  color: var(--tm-brown);
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+
+.tm-result:hover,
+.tm-result:focus-visible {
+  border-color: var(--tm-gold);
+  outline: none;
+}
+
+.tm-result-title {
+  font-weight: 600;
+}
+
+.tm-result-page {
+  color: var(--tm-muted);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.tm-result-dishes {
+  grid-column: 1 / -1;
+  color: var(--tm-muted);
+  font-size: 0.85rem;
+}
+
+.tm-results-empty {
+  margin: 4px 0 0 4px;
+  color: var(--tm-muted);
+}

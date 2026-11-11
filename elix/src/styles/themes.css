@@ -1,0 +1,63 @@
+/* ==========================================================================
+   THE ELIX: colour systems (supplied category palettes)
+   The site theme is set on <html data-theme="..."> by each category page, and a
+   data-theme attribute can also be placed on any single section, card or modal to give
+   it that theme's palette locally. Colours changing at the root fade over 400ms.
+   ========================================================================== */
+
+:root,
+[data-theme="home"] {
+  --font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-body: 'Jost', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --nav-h: 72px;
+
+  /* Parent brand: warm ivory and ink */
+  --bg: #f6f0e6; /* matches the landing video's background exactly */
+  --surface: #ece3d5;
+  --text: #1e1815;
+  --muted: #62564c;
+  --accent: #7a5c2e;
+  --ornament: #b08d57;
+  --line: rgba(30, 24, 21, 0.18);
+  --card: #fffdf9;
+  --card-text: #1e1815;
+  --price-bg: #1e1815;
+  --price-fg: #f5efe6;
+  --btn-bg: #1e1815;
+  --btn-text: #f5efe6;
+  --hero-bg: #1e1815;
+  --hero-text: #f5efe6;
+  --dark-bg: #1a1411;
+  --on-dark: #f2e7d5;
+  --error: #a3322a;
+}
+
+/* The six category palettes, the Restaurant Food groups and every nested section are generated from
+   src/themes/palettes.js into themes.generated.css (imported after this file). */
+
+/* Placeholder image tones. Each category has its own tonal gradient so that a placeholder
+   panel already looks like part of that experience. */
+.img-frame[data-tone="home"] {
+  background: linear-gradient(160deg, #5b4e44, #2e2622 60%, #1f1a17);
+}
+.img-frame[data-tone="interior"] {
+  background: linear-gradient(160deg, #6a5a4c, #3a2f28 60%, #1f1814);
+}
+.img-frame[data-tone="chai"] {
+  background: linear-gradient(160deg, #795548, #4b3028 55%, #30221c);
+}
+.img-frame[data-tone="tiffins"] {
+  background: linear-gradient(160deg, #a3b18a, #687a45 50%, #35432b);
+}
+.img-frame[data-tone="food"] {
+  background: linear-gradient(160deg, #c8754d, #a94f35 55%, #38251f);
+}
+.img-frame[data-tone="mandi"] {
+  background: linear-gradient(160deg, #c7ad83, #302b27 70%, #1f1b18);
+}
+.img-frame[data-tone="shawarma"] {
+  background: linear-gradient(160deg, #c2c982, #566b4d 55%, #283a2a);
+}
+.img-frame[data-tone="bakery"] {
+  background: linear-gradient(160deg, #b77c7d, #713b46 55%, #43252c);
+}

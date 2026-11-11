@@ -1,0 +1,257 @@
+{
+  "note": "One photo and one 4-6 s clip per item. Photo 4:5 portrait, 1200 px wide. Clip 4:5, 720 px wide, no audio, slow camera move or natural motion (steam, pour, drizzle, slice). The clip must start on the same framing as the photo.",
+  "items": [
+    {
+      "id": "irani-chai",
+      "photo": "irani-chai.jpg",
+      "clip": "irani-chai.mp4",
+      "prompt": "Photorealistic professional food photograph of Irani Chai (Tea): A slow-brewed, milk-rich tea with a warm, fragrant finish. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "masala-chai",
+      "photo": "masala-chai.jpg",
+      "clip": "masala-chai.mp4",
+      "prompt": "Photorealistic professional food photograph of Masala Chai (Tea): Black tea simmered with aromatic spices and fresh milk. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "ginger-tea",
+      "photo": "ginger-tea.jpg",
+      "clip": "ginger-tea.mp4",
+      "prompt": "Photorealistic professional food photograph of Ginger Tea (Tea): A clean, gently spiced tea with fresh ginger. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "lemon-tea",
+      "photo": "lemon-tea.jpg",
+      "clip": "lemon-tea.mp4",
+      "prompt": "Photorealistic professional food photograph of Lemon Tea (Tea): A light, bright tea finished with fresh lemon. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "filter-coffee",
+      "photo": "filter-coffee.jpg",
+      "clip": "filter-coffee.mp4",
+      "prompt": "Photorealistic professional food photograph of Filter Coffee (Coffee): Traditional filter coffee, strong and smooth. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "cappuccino",
+      "photo": "cappuccino.jpg",
+      "clip": "cappuccino.mp4",
+      "prompt": "Photorealistic professional food photograph of Cappuccino (Coffee): Espresso topped with velvety steamed milk foam. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "cold-coffee",
+      "photo": "cold-coffee.jpg",
+      "clip": "cold-coffee.mp4",
+      "prompt": "Photorealistic professional food photograph of Cold Coffee (Coolers): Chilled coffee blended to a rich, creamy texture. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "chocolate-milkshake",
+      "photo": "chocolate-milkshake.jpg",
+      "clip": "chocolate-milkshake.mp4",
+      "prompt": "Photorealistic professional food photograph of Chocolate Milkshake (Juices and Shakes): A thick chocolate milkshake, served chilled. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "fresh-lime-mojito",
+      "photo": "fresh-lime-mojito.jpg",
+      "clip": "fresh-lime-mojito.mp4",
+      "prompt": "Photorealistic professional food photograph of Fresh Lime Mojito (Coolers): A refreshing lime cooler with mint and soda. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "watermelon-juice",
+      "photo": "watermelon-juice.jpg",
+      "clip": "watermelon-juice.mp4",
+      "prompt": "Photorealistic professional food photograph of Watermelon Juice (Juices and Shakes): Freshly pressed watermelon, lightly chilled. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "plain-idli",
+      "photo": "plain-idli.jpg",
+      "clip": "plain-idli.mp4",
+      "prompt": "Photorealistic professional food photograph of Plain Idli (Idli): Soft steamed rice cakes served with chutney and sambar. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "ghee-idli",
+      "photo": "ghee-idli.jpg",
+      "clip": "ghee-idli.mp4",
+      "prompt": "Photorealistic professional food photograph of Ghee Idli (Idli): Idli finished with a touch of ghee for a richer taste. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "medu-vada",
+      "photo": "medu-vada.jpg",
+      "clip": "medu-vada.mp4",
+      "prompt": "Photorealistic professional food photograph of Medu Vada (Vada): Crisp, golden lentil fritters with a soft centre. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "plain-dosa",
+      "photo": "plain-dosa.jpg",
+      "clip": "plain-dosa.mp4",
+      "prompt": "Photorealistic professional food photograph of Plain Dosa (Dosa): A thin, crisp fermented rice and lentil crepe. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "masala-dosa",
+      "photo": "masala-dosa.jpg",
+      "clip": "masala-dosa.mp4",
+      "prompt": "Photorealistic professional food photograph of Masala Dosa (Dosa): A crisp dosa filled with spiced potato, served with chutneys. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "mysore-masala-dosa",
+      "photo": "mysore-masala-dosa.jpg",
+      "clip": "mysore-masala-dosa.mp4",
+      "prompt": "Photorealistic professional food photograph of Mysore Masala Dosa (Dosa): Dosa spread with a spiced red chutney and filled with savoury potato. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "ghee-karam-dosa",
+      "photo": "ghee-karam-dosa.jpg",
+      "clip": "ghee-karam-dosa.mp4",
+      "prompt": "Photorealistic professional food photograph of Ghee Karam Dosa (Dosa): Dosa brushed with ghee and a fiery spice powder. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "poori",
+      "photo": "poori.jpg",
+      "clip": "poori.mp4",
+      "prompt": "Photorealistic professional food photograph of Poori (2 pcs) (Breakfast Specials): Two golden puffed breads served with potato masala. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "upma",
+      "photo": "upma.jpg",
+      "clip": "upma.mp4",
+      "prompt": "Photorealistic professional food photograph of Upma (Breakfast Specials): Semolina cooked with vegetables and tempered with mustard seeds. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "pongal",
+      "photo": "pongal.jpg",
+      "clip": "pongal.mp4",
+      "prompt": "Photorealistic professional food photograph of Pongal (Breakfast Specials): A creamy rice and lentil dish with black pepper and ghee. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "chocolate-truffle-cake",
+      "photo": "chocolate-truffle-cake.jpg",
+      "clip": "chocolate-truffle-cake.mp4",
+      "prompt": "Photorealistic professional food photograph of Chocolate Truffle Cake (Cakes): Layers of dark chocolate sponge with a silky truffle ganache. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "red-velvet-pastry",
+      "photo": "red-velvet-pastry.jpg",
+      "clip": "red-velvet-pastry.mp4",
+      "prompt": "Photorealistic professional food photograph of Red Velvet Pastry (Pastries): Red velvet sponge with a smooth cream cheese layer. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "black-forest-pastry",
+      "photo": "black-forest-pastry.jpg",
+      "clip": "black-forest-pastry.mp4",
+      "prompt": "Photorealistic professional food photograph of Black Forest Pastry (Pastries): Chocolate sponge layered with cherries and whipped cream. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "blueberry-cheesecake",
+      "photo": "blueberry-cheesecake.jpg",
+      "clip": "blueberry-cheesecake.mp4",
+      "prompt": "Photorealistic professional food photograph of Blueberry Cheesecake (Desserts): A baked cheesecake crowned with blueberry compote. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "chocolate-brownie",
+      "photo": "chocolate-brownie.jpg",
+      "clip": "chocolate-brownie.mp4",
+      "prompt": "Photorealistic professional food photograph of Chocolate Brownie (Brownies): A dense, fudgy brownie with a crackled top. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "butter-croissant",
+      "photo": "butter-croissant.jpg",
+      "clip": "butter-croissant.mp4",
+      "prompt": "Photorealistic professional food photograph of Butter Croissant (Pastries): Flaky, layered pastry with a buttery finish. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "chocolate-donut",
+      "photo": "chocolate-donut.jpg",
+      "clip": "chocolate-donut.mp4",
+      "prompt": "Photorealistic professional food photograph of Chocolate Donut (Donuts): A soft donut dipped in glossy chocolate. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "choco-chip-cookies",
+      "photo": "choco-chip-cookies.jpg",
+      "clip": "choco-chip-cookies.mp4",
+      "prompt": "Photorealistic professional food photograph of Choco Chip Cookies (Cookies): Crisp-edged cookies studded with chocolate chips. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "walnut-brownie",
+      "photo": "walnut-brownie.jpg",
+      "clip": "walnut-brownie.mp4",
+      "prompt": "Photorealistic professional food photograph of Walnut Brownie (Brownies): A rich brownie with toasted walnuts. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "chocolate-mousse",
+      "photo": "chocolate-mousse.jpg",
+      "clip": "chocolate-mousse.mp4",
+      "prompt": "Photorealistic professional food photograph of Chocolate Mousse (Desserts): A light, airy chocolate mousse. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "veg-dum-biryani",
+      "photo": "veg-dum-biryani.jpg",
+      "clip": "veg-dum-biryani.mp4",
+      "prompt": "Photorealistic professional food photograph of Veg Dum Biryani (Biryani): Fragrant basmati layered with seasonal vegetables and saffron. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "chicken-dum-biryani",
+      "photo": "chicken-dum-biryani.jpg",
+      "clip": "chicken-dum-biryani.mp4",
+      "prompt": "Photorealistic professional food photograph of Chicken Dum Biryani (Biryani): Slow-cooked dum biryani with tender chicken and fragrant rice. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "chicken-65",
+      "photo": "chicken-65.jpg",
+      "clip": "chicken-65.mp4",
+      "prompt": "Photorealistic professional food photograph of Chicken 65 (Indian): Crisp, spiced fried chicken with curry leaves and green chilli. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "paneer-butter-masala",
+      "photo": "paneer-butter-masala.jpg",
+      "clip": "paneer-butter-masala.mp4",
+      "prompt": "Photorealistic professional food photograph of Paneer Butter Masala (Mughlai): Soft paneer simmered in a rich, creamy tomato gravy. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "butter-naan",
+      "photo": "butter-naan.jpg",
+      "clip": "butter-naan.mp4",
+      "prompt": "Photorealistic professional food photograph of Butter Naan (Tandoori): Leavened bread from the tandoor, brushed with butter. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "chicken-tikka",
+      "photo": "chicken-tikka.jpg",
+      "clip": "chicken-tikka.mp4",
+      "prompt": "Photorealistic professional food photograph of Chicken Tikka (Kebabs): Marinated chicken chargrilled in the tandoor. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "chicken-mandi",
+      "photo": "chicken-mandi.jpg",
+      "clip": "chicken-mandi.mp4",
+      "prompt": "Photorealistic professional food photograph of Chicken Mandi (Mandi): Smoky, slow-roasted chicken served over fragrant rice. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "mutton-mandi",
+      "photo": "mutton-mandi.jpg",
+      "clip": "mutton-mandi.mp4",
+      "prompt": "Photorealistic professional food photograph of Mutton Mandi (Mandi): Tender mutton with smoked rice and traditional spices. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "veg-fried-rice",
+      "photo": "veg-fried-rice.jpg",
+      "clip": "veg-fried-rice.mp4",
+      "prompt": "Photorealistic professional food photograph of Veg Fried Rice (Chinese): Wok-tossed rice with fresh vegetables and soy. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    },
+    {
+      "id": "chicken-fried-rice",
+      "photo": "chicken-fried-rice.jpg",
+      "clip": "chicken-fried-rice.mp4",
+      "prompt": "Photorealistic professional food photograph of Chicken Fried Rice (Chinese): Wok-tossed rice with chicken, spring onion and soy. Natural light, shallow depth of field, authentic South Indian cafe styling, no text, no logos, no hands."
+    }
+  ],
+  "site": {
+    "hero-main": "Home hero image (also the still under the hero video)",
+    "hero-accent": "Home hero small image",
+    "welcome": "Home brand introduction",
+    "ambience": "Home ambience banner",
+    "about-story": "About page",
+    "about-ambience": "About page",
+    "gallery-interior-1": "Gallery: Main dining area",
+    "gallery-interior-2": "Gallery: Tea lounge corner",
+    "gallery-interior-3": "Gallery: Bakery counter"
+  },
+  "hero": "hero-food.mp4: 8-12 s seamless loop, 4:5 portrait, 1080x1350, muted, slow cinematic push-in on a signature dish with rising steam."
+}

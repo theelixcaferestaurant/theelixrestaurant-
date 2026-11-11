@@ -1,0 +1,8 @@
+# Only the review functions are defined here. Deploy with:  supabase functions deploy review-otp review-submit
+# verify_jwt is OFF because visitors are anonymous. The functions protect themselves (CAPTCHA, OTP checks,
+# rate limits in the database). Keeping it on also works with a legacy anon key but breaks with the new publishable keys.
+[functions.review-otp]
+verify_jwt = false
+
+[functions.review-submit]
+verify_jwt = false

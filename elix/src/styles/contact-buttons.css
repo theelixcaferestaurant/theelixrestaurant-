@@ -1,0 +1,187 @@
+/* THE ELIX: WHATSAPP and CALL NOW buttons. Shared shape, with one colour set per page theme. */
+.cb {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.cb-btn {
+  flex: 1 1 220px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  box-sizing: border-box;
+  min-height: 56px;
+  padding: 0 24px;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  font-family: var(--font-body, inherit);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.cb-btn svg {
+  flex: 0 0 auto;
+}
+
+.cb-btn:hover {
+  transform: translateY(-2px);
+}
+
+.cb-btn:active {
+  transform: scale(0.97);
+}
+
+.cb-btn:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+  .cb {
+    flex-direction: column;
+  }
+  .cb-btn {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cb-btn,
+  .cb-btn:hover,
+  .cb-btn:active {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* ---------- Take Away (midnight black and royal gold) ---------- */
+.cb--takeaway {
+  margin-top: clamp(24px, 3vw, 40px);
+}
+.cb--takeaway .cb-whatsapp {
+  background: #202020;
+  border-color: #25d366;
+  color: #f5ebd7;
+}
+.cb--takeaway .cb-whatsapp svg {
+  color: #25d366;
+}
+.cb--takeaway .cb-whatsapp:hover {
+  background: #25d366;
+  color: #06210f;
+  box-shadow: 0 14px 28px -14px rgba(37, 211, 102, 0.7);
+}
+.cb--takeaway .cb-whatsapp:hover svg {
+  color: #06210f;
+}
+.cb--takeaway .cb-call {
+  background: #c5a04b;
+  border-color: #c5a04b;
+  color: #090909;
+}
+.cb--takeaway .cb-call:hover {
+  background: #e4bd69;
+  border-color: #e4bd69;
+  box-shadow: 0 14px 28px -14px rgba(228, 189, 105, 0.7);
+}
+
+/* ---------- Take Away Menu (cream and brown, below the menu book) ---------- */
+.cb--menu {
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid #e4d2b1;
+}
+.cb--menu .cb-whatsapp {
+  background: #0f7a3d;
+  border-color: #0f7a3d;
+  color: #ffffff;
+}
+.cb--menu .cb-whatsapp:hover {
+  background: #25a35a;
+  border-color: #25a35a;
+  box-shadow: 0 12px 24px -14px rgba(15, 122, 61, 0.8);
+}
+.cb--menu .cb-call {
+  background: #6e3c18;
+  border-color: #c4923a;
+  color: #f8ebd2;
+}
+.cb--menu .cb-call:hover {
+  background: #5b3519;
+  box-shadow: 0 12px 24px -14px rgba(91, 53, 25, 0.8);
+}
+
+/* ---------- Party Orders (orchid and slate) ---------- */
+.cb--party {
+  margin-top: clamp(32px, 4vw, 56px);
+  padding: clamp(18px, 3vw, 28px);
+  max-width: 720px;
+  border: 1px solid #d4cadb;
+  border-radius: 16px;
+  background: #e9e2ee;
+}
+.cb--party .cb-whatsapp {
+  background: #1b8a4a;
+  border-color: #1b8a4a;
+  color: #ffffff;
+}
+.cb--party .cb-whatsapp:hover {
+  background: #25a35a;
+  border-color: #25a35a;
+  box-shadow: 0 12px 24px -14px rgba(27, 138, 74, 0.8);
+}
+.cb--party .cb-call {
+  background: #655078;
+  border-color: #655078;
+  color: #ffffff;
+}
+.cb--party .cb-call:hover {
+  background: #493858;
+  border-color: #493858;
+  box-shadow: 0 12px 24px -14px rgba(73, 56, 88, 0.8);
+}
+
+/* ---------- Contact page ---------- */
+.cb--contact {
+  justify-content: flex-start;
+  margin: 1rem 0 0;
+}
+.cb--contact .cb-btn {
+  flex: 1 1 190px;
+  min-height: 52px;
+  padding: 0 18px;
+  font-size: 0.95rem;
+}
+.cb--contact .cb-whatsapp {
+  background: #1b8a4a;
+  border-color: #1b8a4a;
+  color: #ffffff;
+}
+.cb--contact .cb-whatsapp:hover {
+  background: #25a35a;
+  border-color: #25a35a;
+  box-shadow: 0 12px 24px -14px rgba(27, 138, 74, 0.8);
+}
+.cb--contact .cb-call {
+  background: var(--btn-bg, #2b2b2b);
+  border-color: var(--btn-bg, #2b2b2b);
+  color: var(--btn-text, #ffffff);
+}
+.cb--contact .cb-call:hover {
+  filter: brightness(1.12);
+  box-shadow: 0 12px 24px -14px rgba(0, 0, 0, 0.55);
+}

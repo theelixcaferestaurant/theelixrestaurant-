@@ -1,0 +1,154 @@
+/* ---------- Steam for hot items ----------
+   Decorative only (aria-hidden). Visible all the time on featured dishes and in the modal,
+   and on hover or keyboard focus for cards. */
+.steam {
+  position: absolute;
+  top: 4%;
+  left: 50%;
+  z-index: 3;
+  display: flex;
+  justify-content: space-around;
+  width: 46%;
+  height: 34%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.steam span {
+  width: 6px;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.55), transparent);
+  filter: blur(4px);
+  opacity: 0;
+  animation: steam-rise 3.8s ease-in-out infinite;
+}
+
+.steam span:nth-child(2) {
+  animation-delay: 1.2s;
+}
+
+.steam span:nth-child(3) {
+  animation-delay: 2.4s;
+}
+
+.steam.always,
+.food-card:hover .steam,
+.food-card:focus-visible .steam,
+.food-row:hover .steam,
+.food-row:focus-visible .steam {
+  opacity: 1;
+}
+
+@keyframes steam-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(22px) scaleX(1);
+  }
+  30% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-48px) scaleX(2.2);
+  }
+}
+
+/* ---------- Bakery: a slow, gentle wave ---------- */
+.wave {
+  animation: wave-drift 16s ease-in-out infinite alternate;
+}
+
+@keyframes wave-drift {
+  from {
+    transform: translateX(-1.5%) scaleX(1.04);
+  }
+  to {
+    transform: translateX(1.5%) scaleX(1.04);
+  }
+}
+
+/* ---------- Reduced motion: keep everything usable without movement ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .steam span,
+  .wave {
+    animation: none;
+  }
+
+  .steam {
+    display: none;
+  }
+}
+
+/* ---------- Intro: refined sound control (top-left) ---------- */
+.intro-sound {
+  top: max(16px, env(safe-area-inset-top));
+  left: max(16px, env(safe-area-inset-left));
+  gap: 0.45rem;
+  padding: 0.5rem 0.8rem;
+  border-color: transparent;
+  background: transparent;
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  opacity: 0.75;
+}
+
+.intro-sound:hover,
+.intro-sound:focus-visible {
+  opacity: 1;
+}
+
+/* Waiting for the first tap/click/key to unlock sound: gentle breathing so it is noticed. */
+.intro-sound.is-pending {
+  border-color: var(--line);
+  opacity: 1;
+  animation: introSoundPulse 2.2s ease-in-out infinite;
+}
+
+@keyframes introSoundPulse {
+  0%, 100% { box-shadow: 0 0 0 0 transparent; }
+  50% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 18%, transparent); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-sound.is-pending { animation: none; }
+}
+
+/* ---------- Scroll reveals (see hooks/useScrollReveal.js) ----------
+   A soft fade and a short slide-up. `translate` is used instead of `transform`, so it never
+   interferes with hover or motion transforms, and nothing here affects layout. The classes only
+   exist while an element is waiting for / playing its reveal. */
+.rv {
+  opacity: 0;
+  translate: 0 22px;
+  will-change: opacity, translate;
+}
+
+.rv.rv-in {
+  opacity: 1;
+  translate: 0 0;
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--rv-delay, 0s),
+    translate 0.9s cubic-bezier(0.22, 1, 0.36, 1) var(--rv-delay, 0s);
+}
+
+@media (max-width: 640px) {
+  .rv { translate: 0 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rv { opacity: 1; translate: none; }
+}

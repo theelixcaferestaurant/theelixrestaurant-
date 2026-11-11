@@ -1,0 +1,933 @@
+/* GENERATED FILE: do not edit by hand.
+   Source of truth: src/themes/palettes.js   Rebuild: npm run themes:build */
+
+/* Chai & Beverages: Coffee Brown & Antique Gold */
+[data-theme="chai"],
+:root[data-theme="chai"] {
+  --bg: #F5EBDD;
+  --surface: #E9D9C5;
+  --text: #30221C;
+  --muted: #795548;
+  --primary: #4B3028;
+  --secondary: #795548;
+  --accent: #4B3028;
+  --ornament: #C6A15B;
+  --line: #D8C4A8;
+  --card: #E9D9C5;
+  --card-text: #30221C;
+  --price-bg: #4B3028;
+  --price-fg: #FFFFFF;
+  --btn-bg: #4B3028;
+  --btn-text: #FFFFFF;
+  --hero-bg: #4B3028;
+  --hero-text: #FFFFFF;
+  --dark-bg: #4B3028;
+  --on-dark: #F5EBDD;
+  --error: #A3322A;
+}
+
+/* South Indian Tiffins: Natural Olive & Sage */
+[data-theme="tiffins"],
+:root[data-theme="tiffins"] {
+  --bg: #F5F3E9;
+  --surface: #E8EBDD;
+  --text: #35432B;
+  --muted: #58673A;
+  --primary: #687A45;
+  --secondary: #A3B18A;
+  --accent: #35432B;
+  --ornament: #D5AE55;
+  --line: #D0D8C2;
+  --card: #E8EBDD;
+  --card-text: #35432B;
+  --price-bg: #687A45;
+  --price-fg: #FFFFFF;
+  --btn-bg: #35432B;
+  --btn-text: #FFFFFF;
+  --hero-bg: #687A45;
+  --hero-text: #FFFFFF;
+  --dark-bg: #35432B;
+  --on-dark: #F5F3E9;
+  --error: #A3322A;
+}
+
+/* Restaurant Food: Rich Terracotta & Earth */
+[data-theme="food"],
+:root[data-theme="food"] {
+  --bg: #F5E9DC;
+  --surface: #EBD7C5;
+  --text: #38251F;
+  --muted: #80523F;
+  --primary: #A94F35;
+  --secondary: #C8754D;
+  --accent: #A94F35;
+  --ornament: #D69A65;
+  --line: #D9BCA5;
+  --card: #EBD7C5;
+  --card-text: #38251F;
+  --price-bg: #A94F35;
+  --price-fg: #FFFFFF;
+  --btn-bg: #A94F35;
+  --btn-text: #FFFFFF;
+  --hero-bg: #A94F35;
+  --hero-text: #FFFFFF;
+  --dark-bg: #38251F;
+  --on-dark: #F5E9DC;
+  --error: #A3322A;
+}
+
+/* Mandi: Arabian Charcoal & Desert Sand */
+[data-theme="mandi"],
+:root[data-theme="mandi"] {
+  --bg: #F0E5D3;
+  --surface: #E2D1B6;
+  --text: #302B27;
+  --muted: #625441;
+  --primary: #302B27;
+  --secondary: #C7AD83;
+  --accent: #302B27;
+  --ornament: #D69A36;
+  --line: #C7AD83;
+  --card: #E2D1B6;
+  --card-text: #302B27;
+  --price-bg: #302B27;
+  --price-fg: #D69A36;
+  --btn-bg: #302B27;
+  --btn-text: #FFFFFF;
+  --hero-bg: #302B27;
+  --hero-text: #FFFFFF;
+  --dark-bg: #302B27;
+  --on-dark: #F0E5D3;
+  --error: #A3322A;
+}
+
+/* Shawarma: Premium Sage & Tropical Green */
+[data-theme="shawarma"],
+:root[data-theme="shawarma"] {
+  --bg: #F3F0E3;
+  --surface: #E6E8D4;
+  --text: #283A2A;
+  --muted: #566B4D;
+  --primary: #566B4D;
+  --secondary: #87966A;
+  --accent: #566B4D;
+  --ornament: #C2C982;
+  --line: #C6CEB0;
+  --card: #E6E8D4;
+  --card-text: #283A2A;
+  --price-bg: #566B4D;
+  --price-fg: #FFFFFF;
+  --btn-bg: #283A2A;
+  --btn-text: #FFFFFF;
+  --hero-bg: #566B4D;
+  --hero-text: #FFFFFF;
+  --dark-bg: #283A2A;
+  --on-dark: #F3F0E3;
+  --error: #A3322A;
+}
+
+/* Bakery: Burgundy & Champagne */
+[data-theme="bakery"],
+:root[data-theme="bakery"] {
+  --bg: #F8EFE4;
+  --surface: #EFE0D2;
+  --text: #43252C;
+  --muted: #713B46;
+  --primary: #713B46;
+  --secondary: #B77C7D;
+  --accent: #713B46;
+  --ornament: #D3B47A;
+  --line: #DEC5AD;
+  --card: #EFE0D2;
+  --card-text: #43252C;
+  --price-bg: #713B46;
+  --price-fg: #FFFFFF;
+  --btn-bg: #713B46;
+  --btn-text: #FFFFFF;
+  --hero-bg: #713B46;
+  --hero-text: #FFFFFF;
+  --dark-bg: #43252C;
+  --on-dark: #F8EFE4;
+  --error: #A3322A;
+}
+
+/* Party Orders: Orchid & Slate */
+[data-theme="party"],
+:root[data-theme="party"] {
+  --bg: #F2EFF5;
+  --surface: #E9E2EE;
+  --text: #494451;
+  --muted: #494451;
+  --primary: #655078;
+  --secondary: #9380A8;
+  --accent: #655078;
+  --ornament: #B7A9C4;
+  --line: #D4CADB;
+  --card: #E9E2EE;
+  --card-text: #494451;
+  --price-bg: #493858;
+  --price-fg: #FFFFFF;
+  --btn-bg: #655078;
+  --btn-text: #FFFFFF;
+  --hero-bg: #655078;
+  --hero-text: #FFFFFF;
+  --dark-bg: #494451;
+  --on-dark: #F2EFF5;
+  --error: #A3322A;
+  --heading: #493858;
+  --hover: #DED4E7;
+}
+
+/* Take Away: Midnight Black & Royal Gold */
+[data-theme="takeaway"],
+:root[data-theme="takeaway"] {
+  --bg: #090909;
+  --surface: #202020;
+  --text: #E9DFC9;
+  --muted: #E9DFC9;
+  --primary: #C5A04B;
+  --secondary: #A98236;
+  --accent: #C5A04B;
+  --ornament: #E4BD69;
+  --line: #80652F;
+  --card: #202020;
+  --card-text: #E9DFC9;
+  --price-bg: #C5A04B;
+  --price-fg: #090909;
+  --btn-bg: #C5A04B;
+  --btn-text: #090909;
+  --hero-bg: #C5A04B;
+  --hero-text: #090909;
+  --dark-bg: #151515;
+  --on-dark: #E9DFC9;
+  --error: #A3322A;
+  --heading: #F5EBD7;
+  --highlight: #E4BD69;
+  --panel: #151515;
+  --hover: #302719;
+}
+
+/* VEG: Emerald Forest Green */
+[data-theme="food-veg"],
+:root[data-theme="food-veg"] {
+  --bg: #EDF3EA;
+  --surface: #DDE9DC;
+  --text: #203A2D;
+  --muted: #326D54;
+  --primary: #245B45;
+  --secondary: #36765B;
+  --accent: #245B45;
+  --ornament: #A5C58A;
+  --line: #C5D9C6;
+  --card: #DDE9DC;
+  --card-text: #203A2D;
+  --price-bg: #245B45;
+  --price-fg: #FFFFFF;
+  --btn-bg: #245B45;
+  --btn-text: #FFFFFF;
+  --hero-bg: #245B45;
+  --hero-text: #FFFFFF;
+  --dark-bg: #203A2D;
+  --on-dark: #EDF3EA;
+  --error: #A3322A;
+}
+
+/* NON-VEG: Deep Chilli Red */
+[data-theme="food-nonveg"],
+:root[data-theme="food-nonveg"] {
+  --bg: #F5E8E2;
+  --surface: #EBD6CE;
+  --text: #48251F;
+  --muted: #923F35;
+  --primary: #923F35;
+  --secondary: #B9684F;
+  --accent: #923F35;
+  --ornament: #D18B68;
+  --line: #DFC2B7;
+  --card: #EBD6CE;
+  --card-text: #48251F;
+  --price-bg: #923F35;
+  --price-fg: #FFFFFF;
+  --btn-bg: #923F35;
+  --btn-text: #FFFFFF;
+  --hero-bg: #923F35;
+  --hero-text: #FFFFFF;
+  --dark-bg: #48251F;
+  --on-dark: #F5E8E2;
+  --error: #A3322A;
+}
+
+/* EGG: Golden Mustard */
+[data-theme="food-egg"],
+:root[data-theme="food-egg"] {
+  --bg: #F8F1DD;
+  --surface: #F0E5C4;
+  --text: #493817;
+  --muted: #7A5B14;
+  --primary: #A77D22;
+  --secondary: #C69A35;
+  --accent: #83621B;
+  --ornament: #E7D49B;
+  --line: #E4D5A7;
+  --card: #F0E5C4;
+  --card-text: #493817;
+  --price-bg: #A77D22;
+  --price-fg: #FFFFFF;
+  --btn-bg: #A77D22;
+  --btn-text: #FFFFFF;
+  --hero-bg: #8E6A1D;
+  --hero-text: #FFFFFF;
+  --dark-bg: #493817;
+  --on-dark: #F8F1DD;
+  --error: #A3322A;
+}
+
+/* COMMON: Warm Stone & Taupe */
+[data-theme="food-common"],
+:root[data-theme="food-common"] {
+  --bg: #F2EEE8;
+  --surface: #E7DED4;
+  --text: #40372F;
+  --muted: #6B5D50;
+  --primary: #89796A;
+  --secondary: #A99785;
+  --accent: #74665A;
+  --ornament: #B2A18E;
+  --line: #D9CFC4;
+  --card: #E7DED4;
+  --card-text: #40372F;
+  --price-bg: #89796A;
+  --price-fg: #FFFFFF;
+  --btn-bg: #89796A;
+  --btn-text: #FFFFFF;
+  --hero-bg: #7E6F62;
+  --hero-text: #FFFFFF;
+  --dark-bg: #40372F;
+  --on-dark: #F2EEE8;
+  --error: #A3322A;
+}
+
+/* VEG Soups & Starters: Botanical Green */
+[data-theme="food-veg-starters"],
+:root[data-theme="food-veg-starters"] {
+  --bg: #EFF4E9;
+  --surface: #E1EBD9;
+  --text: #29472F;
+  --muted: #41704A;
+  --primary: #477A50;
+  --secondary: #6E986F;
+  --accent: #477A50;
+  --ornament: #B6C99B;
+  --line: #CBDCC4;
+  --card: #E1EBD9;
+  --card-text: #29472F;
+  --price-bg: #477A50;
+  --price-fg: #FFFFFF;
+  --btn-bg: #477A50;
+  --btn-text: #FFFFFF;
+  --hero-bg: #477A50;
+  --hero-text: #FFFFFF;
+  --dark-bg: #29472F;
+  --on-dark: #EFF4E9;
+  --error: #A3322A;
+}
+
+/* VEG Indian Main Course: Deep Jade Green */
+[data-theme="food-veg-main"],
+:root[data-theme="food-veg-main"] {
+  --bg: #EAF4EF;
+  --surface: #D9EAE1;
+  --text: #173D33;
+  --muted: #176B55;
+  --primary: #176B55;
+  --secondary: #328B72;
+  --accent: #176B55;
+  --ornament: #8CC6A6;
+  --line: #BED9CE;
+  --card: #D9EAE1;
+  --card-text: #173D33;
+  --price-bg: #176B55;
+  --price-fg: #FFFFFF;
+  --btn-bg: #176B55;
+  --btn-text: #FFFFFF;
+  --hero-bg: #176B55;
+  --hero-text: #FFFFFF;
+  --dark-bg: #173D33;
+  --on-dark: #EAF4EF;
+  --error: #A3322A;
+}
+
+/* VEG Biryani, Rice & Noodles: Moss Green */
+[data-theme="food-veg-rice"],
+:root[data-theme="food-veg-rice"] {
+  --bg: #F3F5E9;
+  --surface: #E7EDD7;
+  --text: #39472A;
+  --muted: #55683A;
+  --primary: #829B58;
+  --secondary: #A2B878;
+  --accent: #5D6F3F;
+  --ornament: #D4DEA9;
+  --line: #D0DDBB;
+  --card: #E7EDD7;
+  --card-text: #39472A;
+  --price-bg: #647A42;
+  --price-fg: #FFFFFF;
+  --btn-bg: #647A42;
+  --btn-text: #FFFFFF;
+  --hero-bg: #657945;
+  --hero-text: #FFFFFF;
+  --dark-bg: #39472A;
+  --on-dark: #F3F5E9;
+  --error: #A3322A;
+}
+
+/* Teal Green */
+[data-theme="veg-teal"],
+:root[data-theme="veg-teal"] {
+  --bg: #EBF3F1;
+  --surface: #D6E7E2;
+  --text: #102B23;
+  --muted: #286B58;
+  --primary: #32866E;
+  --secondary: #70AA9A;
+  --accent: #2E7B65;
+  --ornament: #A3C9BE;
+  --line: #BDD8D1;
+  --card: #D6E7E2;
+  --card-text: #102B23;
+  --price-bg: #2E7B65;
+  --price-fg: #FFFFFF;
+  --btn-bg: #2E7B65;
+  --btn-text: #FFFFFF;
+  --hero-bg: #2E7B65;
+  --hero-text: #FFFFFF;
+  --dark-bg: #102B23;
+  --on-dark: #EBF3F1;
+  --error: #A3322A;
+}
+
+/* Pistachio Green */
+[data-theme="veg-pistachio"],
+:root[data-theme="veg-pistachio"] {
+  --bg: #F6F8F0;
+  --surface: #EDF1E1;
+  --text: #343B22;
+  --muted: #616D3F;
+  --primary: #A3B86A;
+  --secondary: #BFCD97;
+  --accent: #636F40;
+  --ornament: #D6DFBC;
+  --line: #E2E8CF;
+  --card: #EDF1E1;
+  --card-text: #343B22;
+  --price-bg: #6C7946;
+  --price-fg: #FFFFFF;
+  --btn-bg: #6C7946;
+  --btn-text: #FFFFFF;
+  --hero-bg: #6C7946;
+  --hero-text: #FFFFFF;
+  --dark-bg: #343B22;
+  --on-dark: #F6F8F0;
+  --error: #A3322A;
+}
+
+/* Forest Green */
+[data-theme="veg-forest"],
+:root[data-theme="veg-forest"] {
+  --bg: #EAEEEC;
+  --surface: #D4DDD8;
+  --text: #0D1C14;
+  --muted: #204531;
+  --primary: #28563D;
+  --secondary: #698977;
+  --accent: #28563D;
+  --ornament: #9EB3A8;
+  --line: #BAC9C1;
+  --card: #D4DDD8;
+  --card-text: #0D1C14;
+  --price-bg: #28563D;
+  --price-fg: #FFFFFF;
+  --btn-bg: #28563D;
+  --btn-text: #FFFFFF;
+  --hero-bg: #28563D;
+  --hero-text: #FFFFFF;
+  --dark-bg: #0D1C14;
+  --on-dark: #EAEEEC;
+  --error: #A3322A;
+}
+
+/* Sage Green */
+[data-theme="veg-sage"],
+:root[data-theme="veg-sage"] {
+  --bg: #F4F7F3;
+  --surface: #E9EEE6;
+  --text: #2E362A;
+  --muted: #5E6E56;
+  --primary: #91AA83;
+  --secondary: #B2C4A8;
+  --accent: #5F6F56;
+  --ornament: #CED9C7;
+  --line: #DCE4D7;
+  --card: #E9EEE6;
+  --card-text: #2E362A;
+  --price-bg: #67795E;
+  --price-fg: #FFFFFF;
+  --btn-bg: #67795E;
+  --btn-text: #FFFFFF;
+  --hero-bg: #67795E;
+  --hero-text: #FFFFFF;
+  --dark-bg: #2E362A;
+  --on-dark: #F4F7F3;
+  --error: #A3322A;
+}
+
+/* Mint Green */
+[data-theme="veg-mint"],
+:root[data-theme="veg-mint"] {
+  --bg: #F1F6F4;
+  --surface: #E3EEE9;
+  --text: #24362F;
+  --muted: #4A6E5F;
+  --primary: #72A993;
+  --secondary: #9CC3B3;
+  --accent: #4B6F61;
+  --ornament: #C0D8CE;
+  --line: #D2E3DC;
+  --card: #E3EEE9;
+  --card-text: #24362F;
+  --price-bg: #527969;
+  --price-fg: #FFFFFF;
+  --btn-bg: #527969;
+  --btn-text: #FFFFFF;
+  --hero-bg: #527969;
+  --hero-text: #FFFFFF;
+  --dark-bg: #24362F;
+  --on-dark: #F1F6F4;
+  --error: #A3322A;
+}
+
+/* Deep Olive */
+[data-theme="veg-olive"],
+:root[data-theme="veg-olive"] {
+  --bg: #EEF1EB;
+  --surface: #DEE2D7;
+  --text: #1C2412;
+  --muted: #47592C;
+  --primary: #596F37;
+  --secondary: #8B9A73;
+  --accent: #596F37;
+  --ornament: #B4BEA5;
+  --line: #CAD1BF;
+  --card: #DEE2D7;
+  --card-text: #1C2412;
+  --price-bg: #596F37;
+  --price-fg: #FFFFFF;
+  --btn-bg: #596F37;
+  --btn-text: #FFFFFF;
+  --hero-bg: #596F37;
+  --hero-text: #FFFFFF;
+  --dark-bg: #1C2412;
+  --on-dark: #EEF1EB;
+  --error: #A3322A;
+}
+
+/* Chicken: Rich Tomato Red */
+[data-theme="food-chicken"],
+:root[data-theme="food-chicken"] {
+  --bg: #F7EAE4;
+  --surface: #EFD8CF;
+  --text: #48251F;
+  --muted: #974536;
+  --primary: #A44B3B;
+  --secondary: #C46D55;
+  --accent: #A44B3B;
+  --ornament: #D58A70;
+  --line: #E3C6BA;
+  --card: #EFD8CF;
+  --card-text: #48251F;
+  --price-bg: #A44B3B;
+  --price-fg: #FFFFFF;
+  --btn-bg: #A44B3B;
+  --btn-text: #FFFFFF;
+  --hero-bg: #A44B3B;
+  --hero-text: #FFFFFF;
+  --dark-bg: #48251F;
+  --on-dark: #F7EAE4;
+  --error: #A3322A;
+}
+
+/* Mutton: Deep Mahogany */
+[data-theme="food-mutton"],
+:root[data-theme="food-mutton"] {
+  --bg: #F1E7DF;
+  --surface: #E5D4C7;
+  --text: #3C2924;
+  --muted: #684039;
+  --primary: #684039;
+  --secondary: #936052;
+  --accent: #684039;
+  --ornament: #C29370;
+  --line: #D7C2B3;
+  --card: #E5D4C7;
+  --card-text: #3C2924;
+  --price-bg: #684039;
+  --price-fg: #FFFFFF;
+  --btn-bg: #684039;
+  --btn-text: #FFFFFF;
+  --hero-bg: #684039;
+  --hero-text: #FFFFFF;
+  --dark-bg: #3C2924;
+  --on-dark: #F1E7DF;
+  --error: #A3322A;
+}
+
+/* Seafood: Ocean Teal */
+[data-theme="food-seafood"],
+:root[data-theme="food-seafood"] {
+  --bg: #EAF2F0;
+  --surface: #D9E9E6;
+  --text: #234448;
+  --muted: #356B70;
+  --primary: #356B70;
+  --secondary: #65969A;
+  --accent: #356B70;
+  --ornament: #A6C9C6;
+  --line: #BCD6D2;
+  --card: #D9E9E6;
+  --card-text: #234448;
+  --price-bg: #356B70;
+  --price-fg: #FFFFFF;
+  --btn-bg: #356B70;
+  --btn-text: #FFFFFF;
+  --hero-bg: #356B70;
+  --hero-text: #FFFFFF;
+  --dark-bg: #234448;
+  --on-dark: #EAF2F0;
+  --error: #A3322A;
+}
+
+/* Mixed Non-Veg: Burnt Sienna */
+[data-theme="food-mixed"],
+:root[data-theme="food-mixed"] {
+  --bg: #F3E9DD;
+  --surface: #E8D6C2;
+  --text: #432D21;
+  --muted: #70452F;
+  --primary: #70452F;
+  --secondary: #A16D49;
+  --accent: #70452F;
+  --ornament: #D0A477;
+  --line: #DAC4AC;
+  --card: #E8D6C2;
+  --card-text: #432D21;
+  --price-bg: #70452F;
+  --price-fg: #FFFFFF;
+  --btn-bg: #70452F;
+  --btn-text: #FFFFFF;
+  --hero-bg: #70452F;
+  --hero-text: #FFFFFF;
+  --dark-bg: #432D21;
+  --on-dark: #F3E9DD;
+  --error: #A3322A;
+}
+
+/* Chicken Soups & Starters */
+[data-theme="food-chicken-starters"],
+:root[data-theme="food-chicken-starters"] {
+  --bg: #F6EDEB;
+  --surface: #EDDBD8;
+  --text: #341813;
+  --muted: #833C2F;
+  --primary: #A44B3B;
+  --secondary: #BF8176;
+  --accent: #A44B3B;
+  --ornament: #D6AEA7;
+  --line: #E2C5C0;
+  --card: #EDDBD8;
+  --card-text: #341813;
+  --price-bg: #A44B3B;
+  --price-fg: #FFFFFF;
+  --btn-bg: #A44B3B;
+  --btn-text: #FFFFFF;
+  --hero-bg: #A44B3B;
+  --hero-text: #FFFFFF;
+  --dark-bg: #341813;
+  --on-dark: #F6EDEB;
+  --error: #A3322A;
+}
+
+/* Chicken Main Course */
+[data-theme="food-chicken-main"],
+:root[data-theme="food-chicken-main"] {
+  --bg: #F2ECEB;
+  --surface: #E6D8D6;
+  --text: #291310;
+  --muted: #673028;
+  --primary: #813C32;
+  --secondary: #A77770;
+  --accent: #813C32;
+  --ornament: #C6A7A3;
+  --line: #D7C1BD;
+  --card: #E6D8D6;
+  --card-text: #291310;
+  --price-bg: #813C32;
+  --price-fg: #FFFFFF;
+  --btn-bg: #813C32;
+  --btn-text: #FFFFFF;
+  --hero-bg: #813C32;
+  --hero-text: #FFFFFF;
+  --dark-bg: #291310;
+  --on-dark: #F2ECEB;
+  --error: #A3322A;
+}
+
+/* Chicken Biryani, Rice & Noodles */
+[data-theme="food-chicken-rice"],
+:root[data-theme="food-chicken-rice"] {
+  --bg: #F6EFEB;
+  --surface: #EDDED7;
+  --text: #351D11;
+  --muted: #85482A;
+  --primary: #A65A35;
+  --secondary: #C18C72;
+  --accent: #995331;
+  --ornament: #D7B5A4;
+  --line: #E3CABE;
+  --card: #EDDED7;
+  --card-text: #351D11;
+  --price-bg: #A65A35;
+  --price-fg: #FFFFFF;
+  --btn-bg: #A65A35;
+  --btn-text: #FFFFFF;
+  --hero-bg: #A65A35;
+  --hero-text: #FFFFFF;
+  --dark-bg: #351D11;
+  --on-dark: #F6EFEB;
+  --error: #A3322A;
+}
+
+/* Mutton Soups & Starters */
+[data-theme="food-mutton-starters"],
+:root[data-theme="food-mutton-starters"] {
+  --bg: #F2EEEC;
+  --surface: #E4DCDA;
+  --text: #271A16;
+  --muted: #614036;
+  --primary: #795044;
+  --secondary: #A1857C;
+  --accent: #795044;
+  --ornament: #C3B0AB;
+  --line: #D4C7C3;
+  --card: #E4DCDA;
+  --card-text: #271A16;
+  --price-bg: #795044;
+  --price-fg: #FFFFFF;
+  --btn-bg: #795044;
+  --btn-text: #FFFFFF;
+  --hero-bg: #795044;
+  --hero-text: #FFFFFF;
+  --dark-bg: #271A16;
+  --on-dark: #F2EEEC;
+  --error: #A3322A;
+}
+
+/* Mutton Main Course */
+[data-theme="food-mutton-main"],
+:root[data-theme="food-mutton-main"] {
+  --bg: #F0ECEB;
+  --surface: #E1D9D7;
+  --text: #211412;
+  --muted: #53332E;
+  --primary: #684039;
+  --secondary: #957974;
+  --accent: #684039;
+  --ornament: #BBA9A6;
+  --line: #CFC2C0;
+  --card: #E1D9D7;
+  --card-text: #211412;
+  --price-bg: #684039;
+  --price-fg: #FFFFFF;
+  --btn-bg: #684039;
+  --btn-text: #FFFFFF;
+  --hero-bg: #684039;
+  --hero-text: #FFFFFF;
+  --dark-bg: #211412;
+  --on-dark: #F0ECEB;
+  --error: #A3322A;
+}
+
+/* Mutton Biryani & Rice */
+[data-theme="food-mutton-rice"],
+:root[data-theme="food-mutton-rice"] {
+  --bg: #F3EEEB;
+  --surface: #E7DDD8;
+  --text: #2B1B13;
+  --muted: #6A422E;
+  --primary: #85533A;
+  --secondary: #AA8775;
+  --accent: #85533A;
+  --ornament: #C8B2A6;
+  --line: #D8C8C0;
+  --card: #E7DDD8;
+  --card-text: #2B1B13;
+  --price-bg: #85533A;
+  --price-fg: #FFFFFF;
+  --btn-bg: #85533A;
+  --btn-text: #FFFFFF;
+  --hero-bg: #85533A;
+  --hero-text: #FFFFFF;
+  --dark-bg: #2B1B13;
+  --on-dark: #F3EEEB;
+  --error: #A3322A;
+}
+
+/* Seafood Starters & Tandoori */
+[data-theme="food-seafood-starters"],
+:root[data-theme="food-seafood-starters"] {
+  --bg: #EBF1F2;
+  --surface: #D7E4E5;
+  --text: #122627;
+  --muted: #2E5E62;
+  --primary: #39767B;
+  --secondary: #749FA3;
+  --accent: #39767B;
+  --ornament: #A6C1C4;
+  --line: #C0D3D5;
+  --card: #D7E4E5;
+  --card-text: #122627;
+  --price-bg: #39767B;
+  --price-fg: #FFFFFF;
+  --btn-bg: #39767B;
+  --btn-text: #FFFFFF;
+  --hero-bg: #39767B;
+  --hero-text: #FFFFFF;
+  --dark-bg: #122627;
+  --on-dark: #EBF1F2;
+  --error: #A3322A;
+}
+
+/* Seafood Main Course */
+[data-theme="food-seafood-main"],
+:root[data-theme="food-seafood-main"] {
+  --bg: #EAEFF0;
+  --surface: #D6DFE1;
+  --text: #101E21;
+  --muted: #274B53;
+  --primary: #315E68;
+  --secondary: #6F8E95;
+  --accent: #315E68;
+  --ornament: #A2B7BB;
+  --line: #BDCBCF;
+  --card: #D6DFE1;
+  --card-text: #101E21;
+  --price-bg: #315E68;
+  --price-fg: #FFFFFF;
+  --btn-bg: #315E68;
+  --btn-text: #FFFFFF;
+  --hero-bg: #315E68;
+  --hero-text: #FFFFFF;
+  --dark-bg: #101E21;
+  --on-dark: #EAEFF0;
+  --error: #A3322A;
+}
+
+/* Seafood Biryani, Rice & Noodles */
+[data-theme="food-seafood-rice"],
+:root[data-theme="food-seafood-rice"] {
+  --bg: #EDF2F2;
+  --surface: #DAE5E4;
+  --text: #162927;
+  --muted: #386662;
+  --primary: #467F7A;
+  --secondary: #7EA5A2;
+  --accent: #407570;
+  --ornament: #ACC5C3;
+  --line: #C4D6D4;
+  --card: #DAE5E4;
+  --card-text: #162927;
+  --price-bg: #467F7A;
+  --price-fg: #FFFFFF;
+  --btn-bg: #467F7A;
+  --btn-text: #FFFFFF;
+  --hero-bg: #467F7A;
+  --hero-text: #FFFFFF;
+  --dark-bg: #162927;
+  --on-dark: #EDF2F2;
+  --error: #A3322A;
+}
+
+/* Seafood Platters */
+[data-theme="food-seafood-platters"],
+:root[data-theme="food-seafood-platters"] {
+  --bg: #EAEFEF;
+  --surface: #D4DEDF;
+  --text: #0D1D1F;
+  --muted: #20494D;
+  --primary: #285B60;
+  --secondary: #698C90;
+  --accent: #285B60;
+  --ornament: #9EB5B7;
+  --line: #BACBCC;
+  --card: #D4DEDF;
+  --card-text: #0D1D1F;
+  --price-bg: #285B60;
+  --price-fg: #FFFFFF;
+  --btn-bg: #285B60;
+  --btn-text: #FFFFFF;
+  --hero-bg: #285B60;
+  --hero-text: #FFFFFF;
+  --dark-bg: #0D1D1F;
+  --on-dark: #EAEFEF;
+  --error: #A3322A;
+}
+
+/* Mixed Non-Veg Platters */
+[data-theme="food-mixed-platters"],
+:root[data-theme="food-mixed-platters"] {
+  --bg: #F2EDEB;
+  --surface: #E4DAD6;
+  --text: #261710;
+  --muted: #603A28;
+  --primary: #784832;
+  --secondary: #A17F70;
+  --accent: #784832;
+  --ornament: #C2ADA3;
+  --line: #D4C4BD;
+  --card: #E4DAD6;
+  --card-text: #261710;
+  --price-bg: #784832;
+  --price-fg: #FFFFFF;
+  --btn-bg: #784832;
+  --btn-text: #FFFFFF;
+  --hero-bg: #784832;
+  --hero-text: #FFFFFF;
+  --dark-bg: #261710;
+  --on-dark: #F2EDEB;
+  --error: #A3322A;
+}
+
+/* Mixed Non-Veg Rice & Noodles */
+[data-theme="food-mixed-rice"],
+:root[data-theme="food-mixed-rice"] {
+  --bg: #F3EEEB;
+  --surface: #E7DDD7;
+  --text: #2C1C12;
+  --muted: #6E452D;
+  --primary: #895638;
+  --secondary: #AC8974;
+  --accent: #895638;
+  --ornament: #CAB3A5;
+  --line: #D9C9BF;
+  --card: #E7DDD7;
+  --card-text: #2C1C12;
+  --price-bg: #895638;
+  --price-fg: #FFFFFF;
+  --btn-bg: #895638;
+  --btn-text: #FFFFFF;
+  --hero-bg: #895638;
+  --hero-text: #FFFFFF;
+  --dark-bg: #2C1C12;
+  --on-dark: #F3EEEB;
+  --error: #A3322A;
+}

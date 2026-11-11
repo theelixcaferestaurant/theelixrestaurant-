@@ -1,0 +1,32 @@
+{
+  "name": "the-elix",
+  "private": true,
+  "version": "1.0.0",
+  "description": "The Elix: premium restaurant website demonstration (frontend only, sample content)",
+  "type": "module",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "themes:build": "node tools/generate-themes.mjs",
+    "predev": "node tools/generate-themes.mjs",
+    "prebuild": "node tools/generate-themes.mjs",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "assets:check": "node tools/check-assets.mjs",
+    "assets:strict": "node tools/check-assets.mjs --strict"
+  },
+  "dependencies": {
+    "lucide-react": "0.462.0",
+    "motion": "^11.15.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0",
+    "@supabase/supabase-js": "^2.45.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.11"
+  }
+}
