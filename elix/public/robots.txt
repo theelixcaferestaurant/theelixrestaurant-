@@ -1,0 +1,5 @@
+# The build step (tools/seo-postbuild.mjs) replaces this file with one that also lists the sitemap
+# once the site address is known (SITE_URL or Vercel's production URL).
+User-agent: *
+Allow: /
+Disallow: /admin

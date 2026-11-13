@@ -526,7 +526,7 @@ export default function TakeAwayMenuViewer({ pages: pagesProp = null }) {
       {controls}
 
       <p className="tm-open">
-        <a href={page.src} target="_blank" rel="noopener noreferrer">
+        <a href={page.full || page.src} target="_blank" rel="noopener noreferrer">
           Open this page at full size
         </a>
       </p>

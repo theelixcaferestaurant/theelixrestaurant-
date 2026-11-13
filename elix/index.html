@@ -3,30 +3,35 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="The Elix: a demonstration restaurant website. All menu items, prices and business details are sample content for owner review." />
     <meta name="theme-color" content="#f6f0e6" />
     <meta name="format-detection" content="telephone=no" />
+    <!--seo:start-->
+    <title>The Elix | Cafe &amp; Restaurant in Mokila, Hyderabad</title>
+    <meta name="description" content="The Elix is a cafe and restaurant in Mokila, Hyderabad. Chai and beverages, South Indian tiffins, restaurant food, mandi, shawarma and a bakery, with dine in and take away." />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="The Elix" />
-    <meta property="og:title" content="The Elix | A Taste Beyond Expectations" />
-    <meta
-      property="og:description"
-      content="The Elix: a demonstration restaurant website. All menu items, prices and business details are sample content for owner review."
-    />
+    <meta property="og:title" content="The Elix | Cafe &amp; Restaurant in Mokila, Hyderabad" />
+    <meta property="og:description" content="The Elix is a cafe and restaurant in Mokila, Hyderabad. Chai and beverages, South Indian tiffins, restaurant food, mandi, shawarma and a bakery, with dine in and take away." />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="The Elix | A Taste Beyond Expectations" />
+    <meta name="twitter:title" content="The Elix | Cafe &amp; Restaurant in Mokila, Hyderabad" />
+    <!--seo:end-->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap"
-      rel="stylesheet"
-    />
-    <title>The Elix | A Taste Beyond Expectations</title>
+    <!-- Fonts load without blocking the first paint (display=swap shows text immediately in a fallback font). -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" /></noscript>
   </head>
   <body>
     <div id="root"></div>
-    <noscript>The Elix demonstration website needs JavaScript to run.</noscript>
+    <noscript>
+      <p>The Elix needs JavaScript to run.</p>
+      <nav aria-label="Pages">
+        <a href="/">Home</a> · <a href="/explore">Explore Menu</a> · <a href="/explore/take/menu">Take Away Menu</a> ·
+        <a href="/gallery">Gallery</a> · <a href="/reviews">Reviews</a> · <a href="/about">About</a> · <a href="/contact">Contact</a>
+      </nav>
+    </noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

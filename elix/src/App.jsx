@@ -18,21 +18,49 @@ import EditBar from './components/EditBar';
 import ClosureBanner from './components/ClosureBanner';
 import { loadLocalMedia, startAdminPreview } from './lib/localMedia';
 import Home from './pages/Home';
-import Explore from './pages/Explore';
-import DineIn from './pages/DineIn';
-import TakeAway, { TakeAwayPage } from './pages/TakeAway';
-import Chai from './pages/Chai';
-import Tiffins from './pages/Tiffins';
-import Bakery from './pages/Bakery';
-import Food from './pages/Food';
-import Mandi from './pages/Mandi';
-import Shawarma from './pages/Shawarma';
-import About from './pages/About';
-import Gallery from './pages/Gallery';
-import Reviews from './pages/Reviews';
-import Contact from './pages/Contact';
-import NotFound from './pages/NotFound';
-import PartyOrders from './pages/PartyOrders';
+
+// Every other public page is its own small chunk, so the landing page does not download code for pages the visitor
+// has not opened. The chunks are fetched quietly once the browser is idle, so moving between pages stays instant.
+const pageLoaders = {
+  Explore: () => import('./pages/Explore'),
+  DineIn: () => import('./pages/DineIn'),
+  TakeAway: () => import('./pages/TakeAway'),
+  Chai: () => import('./pages/Chai'),
+  Tiffins: () => import('./pages/Tiffins'),
+  Bakery: () => import('./pages/Bakery'),
+  Food: () => import('./pages/Food'),
+  Mandi: () => import('./pages/Mandi'),
+  Shawarma: () => import('./pages/Shawarma'),
+  About: () => import('./pages/About'),
+  Gallery: () => import('./pages/Gallery'),
+  Reviews: () => import('./pages/Reviews'),
+  Contact: () => import('./pages/Contact'),
+  NotFound: () => import('./pages/NotFound'),
+  PartyOrders: () => import('./pages/PartyOrders'),
+};
+const Explore = lazy(pageLoaders.Explore);
+const DineIn = lazy(pageLoaders.DineIn);
+const TakeAway = lazy(pageLoaders.TakeAway);
+const TakeAwayPage = lazy(() => pageLoaders.TakeAway().then((m) => ({ default: m.TakeAwayPage })));
+const Chai = lazy(pageLoaders.Chai);
+const Tiffins = lazy(pageLoaders.Tiffins);
+const Bakery = lazy(pageLoaders.Bakery);
+const Food = lazy(pageLoaders.Food);
+const Mandi = lazy(pageLoaders.Mandi);
+const Shawarma = lazy(pageLoaders.Shawarma);
+const About = lazy(pageLoaders.About);
+const Gallery = lazy(pageLoaders.Gallery);
+const Reviews = lazy(pageLoaders.Reviews);
+const Contact = lazy(pageLoaders.Contact);
+const NotFound = lazy(pageLoaders.NotFound);
+const PartyOrders = lazy(pageLoaders.PartyOrders);
+
+// Fetch the other pages' code after the first screen is done (never competes with the landing page's own loading).
+function prefetchPages() {
+  const run = () => Object.values(pageLoaders).forEach((load) => load().catch(() => {}));
+  if (typeof window.requestIdleCallback === 'function') window.requestIdleCallback(run, { timeout: 8000 });
+  else setTimeout(run, 4000);
+}
 
 const INTRO_KEY = 'elix-intro-seen';
 
@@ -75,11 +103,26 @@ export default function App() {
     startLiveContent();
     loadLocalMedia();
     startAdminPreview();
+    if (!window.location.pathname.startsWith('/admin')) prefetchPages();
   }, []);
 
   // Close search whenever the route changes.
   useEffect(() => {
     setSearchOpen(false);
+  }, [location.pathname]);
+
+  // The static canonical tag (added at build time) belongs to the page that was loaded first. When the visitor moves on,
+  // or opens a deeper page such as /food/..., keep it pointing at the page actually shown (same web address as before).
+  useEffect(() => {
+    const link = document.querySelector('link[rel="canonical"]');
+    if (!link) return;
+    try {
+      if (!link.dataset.origin) link.dataset.origin = new URL(link.href).origin;
+      const path = location.pathname.length > 1 ? location.pathname.replace(/\/+$/, '') : '/';
+      link.href = link.dataset.origin + path;
+    } catch {
+      /* leave the tag as it is */
+    }
   }, [location.pathname]);
 
   // /admin is a completely separate application: no public navbar, footer, intro or theme.
@@ -112,6 +155,7 @@ export default function App() {
             animate={{ opacity: 1, transition: { duration: 0.4, ease: 'easeOut' } }}
             exit={{ opacity: 0, transition: { duration: 0.2 } }}
           >
+            <Suspense fallback={null}>
             <Routes location={location}>
               <Route path="/" element={<Home />} />
               <Route path="/explore" element={<Explore />} />
@@ -131,6 +175,7 @@ export default function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
+            </Suspense>
           </motion.div>
         </AnimatePresence>
       </main>

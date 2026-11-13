@@ -123,6 +123,7 @@ export default function ImagePanel({
           src={src}
           alt={alt ?? label ?? ''}
           loading={eager ? 'eager' : 'lazy'}
+          fetchpriority={eager ? 'high' : undefined}
           decoding="async"
           onError={() => setFailed(true)}
         />

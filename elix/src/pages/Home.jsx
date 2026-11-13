@@ -42,7 +42,7 @@ const MOSAIC = [
 ];
 
 export default function Home() {
-  usePageTitle('The Elix | A Taste Beyond Expectations');
+  usePageTitle('The Elix | Cafe & Restaurant in Mokila, Hyderabad');
   const introDone = useIntroDone();
   const { reviews: approved } = useApprovedReviews(3);
 

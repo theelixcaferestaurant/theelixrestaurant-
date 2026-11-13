@@ -13,6 +13,7 @@
     "prebuild": "node tools/generate-themes.mjs",
     "dev": "vite",
     "build": "vite build",
+    "postbuild": "node tools/seo-postbuild.mjs",
     "preview": "vite preview",
     "assets:check": "node tools/check-assets.mjs",
     "assets:strict": "node tools/check-assets.mjs --strict"
