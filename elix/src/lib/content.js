@@ -44,6 +44,66 @@ const SAMPLE_ITEM_IDS = new Set([
   'paneer-butter-masala', 'chicken-mandi', 'mutton-mandi'
 ]);
 
+
+// ---------------------------------------------------------------------------------------------
+// Image loading support (read-only; nothing here writes to Supabase).
+// All photographs live in the database, so on a first visit the page paints BEFORE the picture addresses are known.
+//  1. The last known picture addresses are kept in this browser (localStorage). A returning visitor therefore starts
+//     downloading the photographs in parallel with the database request, not after it.
+//  2. As soon as the database answers, the site's key photographs are fetched ahead of time (warmed) so they are
+//     already in the browser cache when their section is drawn.
+//  3. `contentSettled` tells picture slots when to stop showing the neutral loading state and fall back to the
+//     labelled demo panel (database answered, failed, or took too long).
+// ---------------------------------------------------------------------------------------------
+const MEDIA_CACHE_KEY = 'elix-media-cache-v1';
+const isUrl = (value) => typeof value === 'string' && /^(https?:)?\/\//i.test(value);
+
+function hydrateMediaFromCache() {
+  try {
+    const raw = window.localStorage.getItem(MEDIA_CACHE_KEY);
+    if (!raw) return;
+    const saved = JSON.parse(raw);
+    if (!saved || typeof saved !== 'object') return;
+    const images = {};
+    Object.entries(saved.images || {}).forEach(([key, url]) => {
+      if (isUrl(url)) images[key] = url;
+    });
+    if (Object.keys(images).length) setRemoteImages(images);
+    if (isUrl(saved.heroPoster)) HERO_VIDEO.poster = saved.heroPoster;
+  } catch {
+    /* storage blocked or unreadable: the database answer will fill everything in */
+  }
+}
+
+function saveMediaToCache(images, heroPoster) {
+  try {
+    window.localStorage.setItem(MEDIA_CACHE_KEY, JSON.stringify({ images, heroPoster: heroPoster || '' }));
+  } catch {
+    /* storage full or blocked: harmless, the cache is only a speed-up */
+  }
+}
+
+const warmed = new Set();
+function warmImages(urls) {
+  if (typeof Image === 'undefined') return;
+  urls.forEach((url) => {
+    if (!isUrl(url) || warmed.has(url)) return;
+    warmed.add(url);
+    const img = new Image();
+    img.decoding = 'async';
+    img.src = url;
+  });
+}
+
+let contentSettled = false;
+const settle = () => {
+  if (contentSettled) return false;
+  contentSettled = true;
+  return true;
+};
+
+if (typeof window !== 'undefined' && isSupabaseConfigured) hydrateMediaFromCache();
+
 let version = 0;
 let lastLoadError = null;
 let loadedOnce = false;
@@ -71,6 +131,9 @@ export const getLoadError = () => lastLoadError;
 // True once the database has answered (or failed, or is not configured), so a page for a dashboard-created category
 // can tell "not loaded yet" from "does not exist".
 export const hasLoadedContent = () => loadedOnce || Boolean(lastLoadError) || !isSupabaseConfigured;
+
+// True once picture slots may stop waiting for the database: it answered, failed, or took too long (see startLiveContent).
+export const isContentSettled = () => contentSettled || hasLoadedContent();
 
 const clean = (value, fallback = '') => (typeof value === 'string' ? value : fallback);
 const rating = (price) => Number((4.4 + (price % 6) / 10).toFixed(1));
@@ -262,6 +325,12 @@ function applyContent({ info, hours, social, settings, categories, subcategories
     });
     setRemoteImages(images);
     setRemoteVideos(videos);
+    saveMediaToCache(images, heroPoster ? heroPoster.url : '');
+    // Site photographs (home, about, categories, hero) are fetched ahead of time; menu and gallery photos stay on demand.
+    warmImages([
+      heroPoster && heroPoster.url,
+      ...media.filter((row) => row.kind === 'image' && row.owner_type === 'site').map((row) => row.url),
+    ].slice(0, 30));
     // An uploaded clip replaces the built-in one; removing it in the dashboard restores the built-in paths.
     HERO_VIDEO.mp4 = heroVideo ? (heroVideo.mime === 'video/webm' ? '' : heroVideo.url) : HERO_DEFAULTS.mp4;
     HERO_VIDEO.webm = heroVideo ? (heroVideo.mime === 'video/webm' ? heroVideo.url : '') : HERO_DEFAULTS.webm;
@@ -338,6 +407,7 @@ export function refreshContent() {
     } catch (error) {
       lastLoadError = error;
       console.warn('The Elix: could not load live content, showing built-in content.', error);
+      notify(); // picture slots stop waiting and show their built-in / demo state
       return false;
     } finally {
       loading = null;
@@ -358,6 +428,10 @@ export function startLiveContent() {
   if (started || !isSupabaseConfigured) return;
   started = true;
   refreshContent();
+  // A slow or hanging database must never leave picture slots in their loading state for ever.
+  setTimeout(() => {
+    if (settle()) notify();
+  }, 6000);
 
   let timer = null;
   const soon = () => {

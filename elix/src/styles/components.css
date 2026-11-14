@@ -28,6 +28,35 @@
   color: rgba(255, 255, 255, 0.94);
 }
 
+/* Photographs fade in only once fully loaded, over a neutral loading layer, so a frame is never blank or half-drawn. */
+.img-frame img.img-fade {
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease-out;
+}
+
+/* Only the not-yet-loaded state sets opacity, so existing rules for a loaded photo (e.g. the dimmed "unavailable" dish) still apply. */
+.img-frame img.img-fade:not(.is-loaded) {
+  opacity: 0;
+}
+
+.img-skel {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: linear-gradient(105deg, rgba(255, 255, 255, 0.04) 20%, rgba(255, 255, 255, 0.13) 45%, rgba(255, 255, 255, 0.04) 70%);
+  background-size: 220% 100%;
+  animation: imgSkel 1.6s ease-in-out infinite;
+}
+
+@keyframes imgSkel {
+  from { background-position: 120% 0; }
+  to { background-position: -120% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .img-skel { animation: none; }
+  .img-frame img.img-fade { transition: opacity 0.01s; }
+}
+
 /* Soft plate and rim rings suggest a photographed dish without drawing food. */
 .img-ph::before {
   content: '';

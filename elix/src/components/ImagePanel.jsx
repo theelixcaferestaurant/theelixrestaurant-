@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { getImage } from '../data/images';
 import { getVideo } from '../data/videos';
-import { useContentVersion } from '../lib/content';
+import { isContentSettled, useContentVersion } from '../lib/content';
+import { isSupabaseConfigured } from '../lib/supabase';
 import { useLocalMediaVersion } from '../lib/localMedia';
 import MediaEditor from './MediaEditor';
 
@@ -36,10 +37,48 @@ export default function ImagePanel({
 }) {
   useContentVersion(); // re-render when the dashboard changes a photo or clip
   useLocalMediaVersion(); // re-render when a photo or clip is added from the device
-  const [failed, setFailed] = useState(false);
   const src = imageKey ? getImage(imageKey) : null;
-  useEffect(() => setFailed(false), [src]);
+  const frameRef = useRef(null);
+  const imgRef = useRef(null);
+  const [failed, setFailed] = useState(false);
+  const [attempt, setAttempt] = useState(0); // transient network errors are retried before the demo panel is shown
+  const [loadedSrc, setLoadedSrc] = useState(null); // the address that has fully loaded
+  const [revealForced, setRevealForced] = useState(false);
+  useEffect(() => {
+    setFailed(false);
+    setAttempt(0);
+  }, [src]);
   const showPhoto = Boolean(src) && !failed;
+  const loaded = showPhoto && loadedSrc === src;
+  // Photographs come from the database. Until it has answered, an empty slot is a neutral loading state, never the
+  // "Demo image" label (which would flash on every first visit) and never an invisible gap.
+  const waiting = !src && isSupabaseConfigured && !isContentSettled();
+
+  // A cached image can finish before React attaches onLoad: check it directly. If the browser is still holding a lazy
+  // image back (for example inside a hidden / clipped reveal frame) after a moment, force it to load now.
+  useEffect(() => {
+    const el = imgRef.current;
+    if (!el || !showPhoto) return undefined;
+    if (el.complete && el.naturalWidth > 0) {
+      setLoadedSrc(src);
+      return undefined;
+    }
+    const t = setTimeout(() => {
+      if (el.isConnected && !(el.complete && el.naturalWidth > 0)) {
+        el.loading = 'eager';
+        el.setAttribute('fetchpriority', 'high');
+      }
+    }, 1200);
+    return () => clearTimeout(t);
+  }, [src, attempt, showPhoto]);
+
+  const onImgError = () => {
+    if (attempt < 2) {
+      setTimeout(() => setAttempt((n) => n + 1), 700 * (attempt + 1));
+      return;
+    }
+    setFailed(true);
+  };
 
   // Every slot can hold a clip: by default it is named after the image key (pass videoKey={null} for none).
   const videoKey = videoKeyProp === undefined ? (Array.isArray(imageKey) ? imageKey : imageKey || null) : videoKeyProp;
@@ -84,10 +123,23 @@ export default function ImagePanel({
     return () => clearTimeout(resetTimer.current);
   }, [canVideo, videoMode]);
 
+  // Safety net for the reveal: if the frame is on screen but the scroll-triggered reveal never started, show it.
+  useEffect(() => {
+    if (!reveal) return undefined;
+    const t = setTimeout(() => {
+      const el = frameRef.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      if (r.bottom > 0 && r.top < (window.innerHeight || 0)) setRevealForced(true);
+    }, 1800);
+    return () => clearTimeout(t);
+  }, [reveal]);
+
   const revealProps = reveal
     ? {
         initial: { clipPath: 'inset(0 0 100% 0)' },
         whileInView: { clipPath: 'inset(0 0 0% 0)' },
+        animate: revealForced ? { clipPath: 'inset(0 0 0% 0)' } : undefined,
         viewport: { once: true, margin: '-40px' },
         transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
       }
@@ -112,6 +164,7 @@ export default function ImagePanel({
 
   return (
     <motion.span
+      ref={frameRef}
       className={`img-frame ${className}`}
       style={ratio ? { aspectRatio: ratio } : undefined}
       data-tone={tone}
@@ -119,14 +172,24 @@ export default function ImagePanel({
       {...videoProps}
     >
       {showPhoto ? (
-        <img
-          src={src}
-          alt={alt ?? label ?? ''}
-          loading={eager ? 'eager' : 'lazy'}
-          fetchpriority={eager ? 'high' : undefined}
-          decoding="async"
-          onError={() => setFailed(true)}
-        />
+        <>
+          {/* neutral loading state that stays under the photograph until it has fully arrived: never a blank frame */}
+          {!loaded && <span className="img-skel" aria-hidden="true" />}
+          <img
+            key={`${src}|${attempt}`}
+            ref={imgRef}
+            className={`img-fade${loaded ? ' is-loaded' : ''}`}
+            src={src}
+            alt={alt ?? label ?? ''}
+            loading={eager || reveal ? 'eager' : 'lazy'}
+            fetchpriority={eager ? 'high' : undefined}
+            decoding="async"
+            onLoad={() => setLoadedSrc(src)}
+            onError={onImgError}
+          />
+        </>
+      ) : waiting ? (
+        <span className="img-skel" role="img" aria-label={alt ?? `${label ?? 'Image'} (loading)`} />
       ) : (
         <span className="img-ph" role="img" aria-label={alt ?? `${label ?? 'Image'} (demo placeholder image)`}>
           {label && (

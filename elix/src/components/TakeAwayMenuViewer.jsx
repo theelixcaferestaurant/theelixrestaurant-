@@ -382,6 +382,19 @@ export default function TakeAwayMenuViewer({ pages: pagesProp = null }) {
 
   useEffect(() => () => clearTimeout(turnTimer.current), []);
 
+  // Fetch the pages next to the one on screen ahead of time, so turning a page never shows an empty sheet.
+  useEffect(() => {
+    if (typeof Image === 'undefined' || count === 0) return;
+    const at = Math.min(index, count - 1);
+    [at, at + 1, at - 1, at + 2].forEach((i) => {
+      const src = pages[i]?.src;
+      if (!src) return;
+      const img = new Image();
+      img.decoding = 'async';
+      img.src = src;
+    });
+  }, [index, count, pages]);
+
   const controls = (
     <div className="tm-controls">
       <div className="tm-nav">
