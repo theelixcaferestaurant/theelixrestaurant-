@@ -70,9 +70,15 @@ export const THEMES = {
   },
 };
 
+// The categories that have their own page and palette in the code. Anything else in the categories table was created
+// in the dashboard (Phase 3) and is added to THEMES at run time by src/lib/content.js (page address /menu/<key>).
+// Taken here, before any live content is applied, so it always lists only the built-in ones.
+export const BUILT_IN_CATEGORY_KEYS = Object.freeze(Object.keys(THEMES).filter((key) => key !== 'home'));
+
 // Party Orders sits under Take Away and is not in this list, so it is not shown on Home, Explore or Footer.
 // Display order used on the Explore page and Home page, matching the supplied menu numbering:
 // 1 Chai & Beverages, 2 South Indian Tiffins, 3 Restaurant Food, 4 Mandi, 5 Shawarma, 6 Bakery.
+// (This array and CATEGORY_PATHS are updated in place by src/lib/content.js when the dashboard reorders, hides or adds categories.)
 export const CATEGORY_ORDER = ['chai', 'tiffins', 'food', 'mandi', 'shawarma', 'bakery'];
 
 export const CATEGORY_PATHS = CATEGORY_ORDER.map((key) => THEMES[key].path);

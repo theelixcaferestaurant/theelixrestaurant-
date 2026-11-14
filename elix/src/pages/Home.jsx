@@ -124,7 +124,7 @@ export default function Home() {
       <section className="section explore-intro">
         <div className="container explore-head">
           <h2>Explore our menu</h2>
-          <p className="lead">Four experiences. One destination.</p>
+          <p className="lead">{SETTINGS.explore_subtitle}</p>
           <Link className="btn btn-ghost" to="/explore">
             Open the full menu
           </Link>

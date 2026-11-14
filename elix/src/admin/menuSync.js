@@ -2,7 +2,7 @@ import { supabase } from '../lib/supabase';
 import { refreshContent } from '../lib/content';
 import { fetchAllRows } from '../lib/fetchAll';
 import { BUILT_IN_MENU } from '../data/menuData';
-import { CATEGORY_ORDER, THEMES } from '../themes/themeConfig';
+import { BUILT_IN_CATEGORY_KEYS, CATEGORY_ORDER, THEMES } from '../themes/themeConfig';
 import SETUP_SQL from '../../supabase/migrations/0012_menu_categories_and_columns.sql?raw';
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -25,6 +25,10 @@ export const SETUP_SQL_FILE = 'supabase/migrations/0012_menu_categories_and_colu
 // The order the categories appear on the website (Explore Menu), then Party Orders (which lives under Take Away).
 export const ADMIN_CATEGORY_ORDER = [...CATEGORY_ORDER, 'party'];
 export const sortCategories = (cats) => {
+  // Once migration 0014 has run, the order saved in the database (changed with the arrows on the Categories page) is the order.
+  if (cats.some((c) => 'enabled' in c)) {
+    return [...cats].sort((a, b) => (a.key === 'party') - (b.key === 'party') || (a.sort_order || 0) - (b.sort_order || 0) || String(a.label).localeCompare(String(b.label)));
+  }
   const rank = (key) => {
     const i = ADMIN_CATEGORY_ORDER.indexOf(key);
     return i === -1 ? 999 : i;
@@ -33,7 +37,8 @@ export const sortCategories = (cats) => {
 };
 
 const NEW_CATEGORY_ORDER = { shawarma: 10, mandi: 11, party: 12 };
-const WEBSITE_CATEGORY_KEYS = Object.keys(THEMES).filter((key) => key !== 'home');
+// Only the categories that exist in the website's code can be copied in; categories created in the dashboard are never "missing".
+const WEBSITE_CATEGORY_KEYS = [...BUILT_IN_CATEGORY_KEYS];
 
 // Placeholder dishes created by migration 0002. They were never part of the real menu.
 const SAMPLE_IDS = new Set([

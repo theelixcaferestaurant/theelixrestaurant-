@@ -31,6 +31,7 @@ const pageLoaders = {
   Food: () => import('./pages/Food'),
   Mandi: () => import('./pages/Mandi'),
   Shawarma: () => import('./pages/Shawarma'),
+  MenuCategory: () => import('./pages/MenuCategory'),
   About: () => import('./pages/About'),
   Gallery: () => import('./pages/Gallery'),
   Reviews: () => import('./pages/Reviews'),
@@ -48,6 +49,7 @@ const Bakery = lazy(pageLoaders.Bakery);
 const Food = lazy(pageLoaders.Food);
 const Mandi = lazy(pageLoaders.Mandi);
 const Shawarma = lazy(pageLoaders.Shawarma);
+const MenuCategory = lazy(pageLoaders.MenuCategory);
 const About = lazy(pageLoaders.About);
 const Gallery = lazy(pageLoaders.Gallery);
 const Reviews = lazy(pageLoaders.Reviews);
@@ -169,6 +171,7 @@ export default function App() {
               <Route path="/food/*" element={<Food />} />
               <Route path="/mandi" element={<Mandi />} />
               <Route path="/shawarma" element={<Shawarma />} />
+              <Route path="/menu/:key" element={<MenuCategory />} />
               <Route path="/about" element={<About />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/reviews" element={<Reviews />} />

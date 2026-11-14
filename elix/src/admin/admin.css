@@ -178,3 +178,12 @@ textarea.a-input { resize: vertical; min-height: 80px; }
 .admin .tm-preview { position: relative; border-radius: 10px; overflow: hidden; }
 .admin .tm-preview .tm-open-full { display: none; }
 .admin .tm-preview button { font-family: inherit; }
+
+/* ---- Phase 3: subcategory manager ---- */
+.a-sub-panel { margin: 8px 0 16px; padding: 12px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; }
+.a-sub-row { background: #fff; }
+.a-sub-form { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 8px 0; }
+.a-sub-form .a-input { flex: 1; min-width: 180px; }
+.a-sub-edit { flex: 1; display: grid; gap: 10px; min-width: 0; }
+.a-radios { display: flex; flex-direction: column; gap: 10px; margin: 10px 0 14px; }
+@media (max-width: 860px) { .a-sub-row { margin-left: 0 !important; } }

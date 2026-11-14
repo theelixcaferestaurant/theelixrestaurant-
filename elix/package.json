@@ -16,7 +16,8 @@
     "postbuild": "node tools/seo-postbuild.mjs",
     "preview": "vite preview",
     "assets:check": "node tools/check-assets.mjs",
-    "assets:strict": "node tools/check-assets.mjs --strict"
+    "assets:strict": "node tools/check-assets.mjs --strict",
+    "test:phase3": "node tests/phase3/run.mjs"
   },
   "dependencies": {
     "lucide-react": "0.462.0",

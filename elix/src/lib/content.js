@@ -3,7 +3,7 @@ import { supabase, isSupabaseConfigured } from './supabase';
 import { BUSINESS, SOCIAL, SOCIAL_DEFAULTS, SETTINGS, HERO_VIDEO, OPENING_HOURS, CLOSURE, setDemoNotice } from '../data/siteData';
 import { MENU, getItemsByCategory } from '../data/menuData';
 import { GALLERY } from '../data/galleryData';
-import { THEMES } from '../themes/themeConfig';
+import { CATEGORY_ORDER, CATEGORY_PATHS, THEMES } from '../themes/themeConfig';
 import { setRemoteImages } from '../data/images';
 import { setRemoteVideos } from '../data/videos';
 import { isUnavailable } from './availability';
@@ -11,6 +11,7 @@ import { closureShown, summariseWeeklyHours, upcomingSpecialHours } from './hour
 import { DAILY_TIMINGS } from '../data/timings';
 import { setTakeawaySlides } from './takeaway';
 import { fetchAllRows } from './fetchAll';
+import { buildIndex, compareOrderKeys, placeItem } from './menuStructure';
 
 // ---------------------------------------------------------------------------------------------
 // Live content layer.
@@ -27,6 +28,10 @@ const HERO_DEFAULTS = { ...HERO_VIDEO };
 // descriptions, order and nested headings stay exactly as supplied. Taken before any database content is applied.
 const LOCAL_MENU = [...MENU];
 
+// The category order the website had before the dashboard could reorder categories (used only for built-in categories
+// that are not in the database yet).
+const DEFAULT_CATEGORY_ORDER = [...CATEGORY_ORDER];
+
 // Sample items from supabase/migrations/0002_seed_content.sql. They are not part of the supplied menu,
 // so they stay off the public site. Items added in the dashboard (any other id) are shown.
 const SAMPLE_ITEM_IDS = new Set([
@@ -41,6 +46,7 @@ const SAMPLE_ITEM_IDS = new Set([
 
 let version = 0;
 let lastLoadError = null;
+let loadedOnce = false;
 const listeners = new Set();
 const subscribe = (fn) => {
   listeners.add(fn);
@@ -62,13 +68,74 @@ export function useCategoryItems(category) {
 
 export const getLoadError = () => lastLoadError;
 
+// True once the database has answered (or failed, or is not configured), so a page for a dashboard-created category
+// can tell "not loaded yet" from "does not exist".
+export const hasLoadedContent = () => loadedOnce || Boolean(lastLoadError) || !isSupabaseConfigured;
+
 const clean = (value, fallback = '') => (typeof value === 'string' ? value : fallback);
 const rating = (price) => Number((4.4 + (price % 6) / 10).toFixed(1));
 const formatPrice = (value) => (value === 'MRP' ? 'MRP' : `₹${Number(value)}`);
 // The price exactly as shown on the website: the saved text (for example ₹200/380, ₹2,200 or MRP) or the number.
 const displayPrice = (row) => (row.price_text && row.price_text.trim() ? row.price_text.trim() : formatPrice(row.price));
 
-function applyContent({ info, hours, social, settings, categories, items, gallery, media, weekly, special, timings, menuFromDatabase }) {
+// Categories from the database. Built-in categories keep their own page, palette and address; a category created in the
+// dashboard gets a page at /menu/<key> (see src/pages/MenuCategory.jsx) and the site's default colours.
+function applyCategories(rows) {
+  const present = new Set();
+  rows.forEach((row) => {
+    present.add(row.key);
+    if (!THEMES[row.key]) {
+      THEMES[row.key] = { code: '', letter: '•', path: `/menu/${row.key}`, custom: true };
+    }
+    const theme = THEMES[row.key];
+    Object.assign(theme, {
+      label: row.label,
+      heading: theme.custom ? row.heading || row.label : row.heading,
+      intro: row.intro,
+      short: row.short_text,
+      disabled: row.enabled === false,
+    });
+    if (theme.custom) theme.code = String(row.label || row.key).toUpperCase();
+  });
+  // a dashboard-created category that was deleted disappears
+  Object.keys(THEMES).forEach((key) => {
+    if (THEMES[key].custom && !present.has(key)) delete THEMES[key];
+  });
+
+  // Order, visibility and the lists that Explore, Dine In, Footer, Home and the navigation read. Only once migration 0014
+  // has run (the rows then carry `enabled`); before that the built-in order stays exactly as it was.
+  if (!rows.some((row) => 'enabled' in row)) return;
+  const sorted = [...rows].sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0) || String(a.label).localeCompare(String(b.label)));
+  const keys = sorted.filter((row) => row.key !== 'party' && THEMES[row.key] && row.enabled !== false).map((row) => row.key);
+  DEFAULT_CATEGORY_ORDER.forEach((key) => {
+    if (!present.has(key)) keys.push(key); // a built-in category that is not in the table yet keeps its usual place
+  });
+  CATEGORY_ORDER.splice(0, CATEGORY_ORDER.length, ...keys);
+  CATEGORY_PATHS.splice(0, CATEGORY_PATHS.length, ...keys.map((key) => THEMES[key].path));
+}
+
+// Items of the same category are laid out in subcategory order first (then by their own order number), so reordering
+// subcategories in the dashboard changes the order of the sections on the website.
+function orderByStructure(entries) {
+  const buckets = new Map();
+  entries.forEach((entry) => {
+    const key = entry.row.category_key;
+    if (!buckets.has(key)) buckets.set(key, []);
+    buckets.get(key).push(entry);
+  });
+  const out = [];
+  buckets.forEach((list) => {
+    out.push(
+      ...list
+        .map((entry, i) => ({ entry, i }))
+        .sort((a, b) => compareOrderKeys(a.entry.place.orderKey, b.entry.place.orderKey) || a.i - b.i)
+        .map(({ entry }) => entry)
+    );
+  });
+  return out;
+}
+
+function applyContent({ info, hours, social, settings, categories, subcategories, items, gallery, media, weekly, special, timings, menuFromDatabase }) {
   if (info) {
     Object.assign(BUSINESS, {
       name: clean(info.name, BUSINESS.name),
@@ -112,18 +179,7 @@ function applyContent({ info, hours, social, settings, categories, items, galler
     );
   }
 
-  if (categories) {
-    categories.forEach((row) => {
-      if (!THEMES[row.key]) return;
-      Object.assign(THEMES[row.key], {
-        label: row.label,
-        heading: row.heading,
-        intro: row.intro,
-        short: row.short_text,
-      });
-      // Subcategories come from the built-in menu only (Restaurant Food: VEG / NON-VEG / EGG / COMMON).
-    });
-  }
+  if (categories) applyCategories(categories);
 
   if (items) {
     const live = (row) => ({
@@ -132,13 +188,16 @@ function applyContent({ info, hours, social, settings, categories, items, galler
       availFrom: row.available_from || null,
       availTo: row.available_to || null,
     });
+    // Subcategories (migration 0014). Without them every item keeps the heading text stored on the item itself.
+    const index = subcategories ? buildIndex(subcategories) : null;
+    const categoryShown = (key) => Boolean(THEMES[key]) && !THEMES[key].disabled;
     // The menu as the database holds it (every field editable in the dashboard).
-    const fromRow = (row) => ({
+    const fromRow = (row, place = placeItem(index, row)) => ({
       id: row.id,
       name: row.name,
       category: row.category_key,
-      sub: row.sub || '',
-      path: Array.isArray(row.path) && row.path.length ? row.path : row.sub ? [row.sub] : [],
+      sub: place.sub,
+      path: place.path,
       price: displayPrice(row),
       veg: row.veg,
       desc: row.description || '',
@@ -151,7 +210,11 @@ function applyContent({ info, hours, social, settings, categories, items, galler
     if (menuFromDatabase) {
       // Migration 0010 has copied the whole menu into the database: the database IS the menu now. Items deleted or
       // hidden in the dashboard disappear completely (no empty cards), new items and edits show straight away.
-      MENU.splice(0, MENU.length, ...items.filter((row) => THEMES[row.category_key]).map(fromRow));
+      const shown = items
+        .filter((row) => categoryShown(row.category_key))
+        .map((row) => ({ row, place: placeItem(index, row) }))
+        .filter(({ place }) => !place.hidden);
+      MENU.splice(0, MENU.length, ...orderByStructure(shown).map(({ row, place }) => fromRow(row, place)));
     } else {
       // Before the migration: the built-in menu stays as supplied, with live availability and dashboard-added items.
       const rowsById = new Map(items.map((row) => [row.id, row]));
@@ -159,9 +222,9 @@ function applyContent({ info, hours, social, settings, categories, items, galler
       const merged = LOCAL_MENU.map((item) => {
         const row = rowsById.get(item.id);
         return row ? { ...item, ...live(row) } : item;
-      });
+      }).filter((item) => categoryShown(item.category));
       items.forEach((row) => {
-        if (builtInIds.has(row.id) || SAMPLE_ITEM_IDS.has(row.id) || !THEMES[row.category_key]) return;
+        if (builtInIds.has(row.id) || SAMPLE_ITEM_IDS.has(row.id) || !categoryShown(row.category_key)) return;
         merged.push(fromRow(row));
       });
       MENU.splice(0, MENU.length, ...merged);
@@ -206,6 +269,9 @@ function applyContent({ info, hours, social, settings, categories, items, galler
   }
 }
 
+const isMissingTable = (error) =>
+  Boolean(error) && (error.code === '42P01' || error.code === 'PGRST205' || /does not exist|could not find the table|schema cache/i.test(error.message || ''));
+
 let loading = null;
 let reloadAfter = false;
 
@@ -234,13 +300,18 @@ export function refreshContent() {
       const failed = [info, hours, social, settings, categories, items, gallery, media].find((r) => r.error);
       if (failed) throw failed.error;
       // Added by migration 0009. If it has not been run yet these fail quietly and the built-in text stays.
-      const [weekly, special, timings, slides] = await Promise.all([
+      const [weekly, special, timings, slides, subcategories] = await Promise.all([
         supabase.from('weekly_hours').select('*'),
         supabase.from('special_hours').select('*'),
         supabase.from('service_timings').select('*').order('sort_order'),
         // Added by migration 0010. Until it is run, the built-in nine Take Away pages stay in place.
         supabase.from('takeaway_slides').select('*').eq('published', true).order('sort_order').order('created_at'),
+        // Added by migration 0014. Until it is run, items keep the heading text stored on each item.
+        fetchAllRows(() => supabase.from('menu_subcategories').select('*').order('id')),
       ]);
+      // A missing table is fine (older database). Any other failure aborts this refresh, so a hiccup can never make
+      // renamed or hidden subcategories flash back to their old state.
+      if (subcategories.error && !isMissingTable(subcategories.error)) throw subcategories.error;
       const menuFromDatabase = (settings.data || []).some((row) => row.key === 'menu_source' && row.value === 'database');
       applyContent({
         info: info.data,
@@ -248,6 +319,7 @@ export function refreshContent() {
         social: social.data,
         settings: settings.data,
         categories: categories.data,
+        subcategories: subcategories.error ? null : subcategories.data,
         // Before the menu has been copied into the database an empty table keeps the built-in menu.
         // After it (menu_source = database) the table is the menu, even when every item has been removed.
         items: menuFromDatabase || (items.data && items.data.length) ? items.data : null,
@@ -260,6 +332,7 @@ export function refreshContent() {
       });
       if (!slides.error && slides.data) setTakeawaySlides(slides.data);
       lastLoadError = null;
+      loadedOnce = true;
       notify();
       return true;
     } catch (error) {

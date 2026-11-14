@@ -13,6 +13,7 @@ const TEXTS = [
   ['brand_text', 'Brand introduction: text', true],
   ['ambience_title', 'Atmosphere banner: heading', false],
   ['ambience_text', 'Atmosphere banner: text', true],
+  ['explore_subtitle', 'Explore our menu: subtitle', false],
   ['pillar_1_title', 'Why The Elix, pillar 1: title', false],
   ['pillar_1_text', 'Why The Elix, pillar 1: text', true],
   ['pillar_2_title', 'Why The Elix, pillar 2: title', false],

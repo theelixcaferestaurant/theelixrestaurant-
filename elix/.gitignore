@@ -11,3 +11,4 @@ supabase/functions/.env
 
 # local secrets
 .env.production
+tests/phase3/.phase3-test.bundle.mjs

@@ -8,6 +8,7 @@ import CategoriesPage from './pages/CategoriesPage';
 import GalleryPage from './pages/GalleryPage';
 import RestaurantPage from './pages/RestaurantPage';
 import HomepagePage from './pages/HomepagePage';
+import AboutPage from './pages/AboutPage';
 import ReviewsPage from './pages/ReviewsPage';
 import OverviewPage from './pages/OverviewPage';
 import MediaPage from './pages/MediaPage';
@@ -152,6 +153,7 @@ const NAV = [
   ['/admin/media', 'Website media'],
   ['/admin/gallery', 'Gallery'],
   ['/admin/homepage', 'Website content'],
+  ['/admin/about', 'About Us'],
   ['/admin/restaurant', 'Restaurant details'],
   ['/admin/hours', 'Opening hours'],
   ['/admin/backup', 'Backup & recovery'],
@@ -193,6 +195,7 @@ function Shell({ user }) {
           <Route path="/admin/reviews" element={<ReviewsPage />} />
           <Route path="/admin/restaurant" element={<RestaurantPage />} />
           <Route path="/admin/homepage" element={<HomepagePage />} />
+          <Route path="/admin/about" element={<AboutPage />} />
           <Route path="*" element={<Navigate to="/admin" replace />} />
         </Routes>
       </main>

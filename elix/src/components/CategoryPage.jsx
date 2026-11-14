@@ -81,6 +81,19 @@ export default function CategoryPage({ category, hero = 'split', heroRatio = '4 
   const matches = useMemo(() => filterItems(ITEMS, query), [ITEMS, query]);
   const matchTree = useMemo(() => buildTree(matches), [matches]);
 
+  // A category switched off in the dashboard is not offered anywhere; anyone who still has its address sees this notice.
+  if (theme.disabled) {
+    return (
+      <section className="page-hero center">
+        <div className="container">
+          <BackButton to={category === 'party' ? '/explore/take' : '/explore/dine'} />
+          <h1 className="display-xl">{theme.label}</h1>
+          <p className="lead centered-lead">This part of the menu is not available right now.</p>
+        </div>
+      </section>
+    );
+  }
+
   const heroImage = (ratio, className) => (
     <ImagePanel
       imageKey={`category-${category}`}

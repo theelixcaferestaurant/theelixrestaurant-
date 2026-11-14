@@ -4,11 +4,15 @@ import { refreshContent } from '../../lib/content';
 import { fetchAllRows } from '../../lib/fetchAll';
 import { SETUP_SQL_FILE, SETUP_SQL_TEXT, SetupNeeded, applySync, loadSyncState, planSync, rememberDeleted, sortCategories } from '../menuSync';
 import MediaField from '../MediaField';
+import StructureSetup from '../StructureSetup';
+import SubcategoryManager from '../SubcategoryManager';
+import { ensureSubcategoryPath, isMissingTable } from '../menuStructure';
+import { buildIndex, cleanName, compareOrderKeys, flattenTree, placeItem } from '../../lib/menuStructure';
 import { removeAllMedia } from '../media';
 import { formatRestaurantDateTime, isRowUnavailable, isoToLocalInput, localInputToIso } from '../../lib/availability';
 import { Button, Card, Check, Field, LoadState, Modal, Select, TextArea, TextInput, errorText, slugify, useConfirm, useLoad, useToast } from '../ui';
 
-const EMPTY = { id: '', name: '', category_key: 'chai', sub: '', path: [], price_text: null, price: '', veg: 'none', description: '', featured: false, hot: false, available: true, sort_order: 0, availability: 'available', unavailable_until: null, available_from: null, available_to: null };
+const EMPTY = { id: '', name: '', category_key: 'chai', sub: '', path: [], subcategory_id: null, price_text: null, price: '', veg: 'none', description: '', featured: false, hot: false, available: true, sort_order: 0, availability: 'available', unavailable_until: null, available_from: null, available_to: null };
 const vegToValue = (veg) => (veg === true ? 'veg' : veg === false ? 'nonveg' : 'none');
 const valueToVeg = (value) => (value === 'veg' ? true : value === 'nonveg' ? false : null);
 
@@ -16,7 +20,9 @@ const valueToVeg = (value) => (value === 'veg' ? true : value === 'nonveg' ? fal
 const SEP = ' › ';
 const pathOf = (item) => (Array.isArray(item.path) && item.path.length ? item.path : item.sub ? [item.sub] : []);
 const pathKey = (item) => pathOf(item).join(SEP);
-const NEW_SECTION = '__new__';
+const NEW_SECTION = '__new__'; // the "+ New subcategory…" choice
+const LEGACY = '__legacy__'; // an item whose heading text is not a subcategory yet (database not updated)
+const groupKey = (item) => item.subcategory_id || `legacy:${pathKey(item)}`;
 
 // The price as the customer sees it. "200" -> ₹200, "200/380" -> ₹200/380, "2,200" -> ₹2,200, "MRP" -> MRP.
 // price (the number) is the first figure, used only for sorting and the sample rating.
@@ -28,23 +34,28 @@ function parsePrice(input) {
   if (!first) return null;
   return { price: Number(first[0]), price_text: `₹${text}` };
 }
+const pathNamesOf = (subRows, id) => placeItem(buildIndex(subRows), { category_key: subRows.find((x) => x.id === id)?.category_key, subcategory_id: id }).path;
 const editablePrice = (item) => (item.price_text ? item.price_text.replace(/^₹/, '') : String(item.price ?? ''));
 
 async function loadAll() {
-  const [cats, items, media] = await Promise.all([
+  const [cats, items, media, subs] = await Promise.all([
     supabase.from('categories').select('*').order('sort_order'),
     fetchAllRows(() => supabase.from('menu_items').select('*').order('category_key').order('sort_order').order('name').order('id')),
     supabase.from('media_assets').select('owner_id, kind, url').eq('owner_type', 'menu_item'),
+    fetchAllRows(() => supabase.from('menu_subcategories').select('*').order('id')),
   ]);
   const failed = [cats, items, media].find((r) => r.error);
   if (failed) throw failed.error;
+  if (subs.error && !isMissingTable(subs.error)) throw subs.error;
+  // false until migration 0014 has been run: subcategories then cannot be managed and items keep their stored headings
+  const structureReady = !subs.error && cats.data.every((c) => 'enabled' in c);
   const thumbs = {};
   const clips = new Set();
   media.data.forEach((m) => (m.kind === 'image' ? (thumbs[m.owner_id] = m.url) : clips.add(m.owner_id)));
-  return { cats: sortCategories(cats.data), items: items.data, thumbs, clips };
+  return { cats: sortCategories(cats.data), items: items.data, thumbs, clips, subs: structureReady ? subs.data : [], structureReady };
 }
 
-function ItemForm({ initial, cats, items, onSaved, onClose }) {
+function ItemForm({ initial, cats, items, subs, structureReady, onSaved, onClose }) {
   const toast = useToast();
   const isNew = !initial.created_at;
   const [form, setForm] = useState({
@@ -59,23 +70,21 @@ function ItemForm({ initial, cats, items, onSaved, onClose }) {
   const [saving, setSaving] = useState(false);
   const [savedId, setSavedId] = useState(isNew ? null : initial.id); // media can be uploaded once the item exists
   const set = (key, value) => setForm((f) => ({ ...f, [key]: value }));
-  // Existing sections of the chosen category, taken from the menu itself.
-  const sections = useMemo(() => {
-    const map = new Map();
-    items.filter((i) => i.category_key === form.category_key).forEach((i) => {
-      const k = pathKey(i);
-      if (k && !map.has(k)) map.set(k, pathOf(i));
-    });
-    return map;
-  }, [items, form.category_key]);
-  const startKey = pathKey(initial);
-  const [section, setSection] = useState(startKey);
+  // Subcategories of the chosen category, in website order (nested ones indented by their path).
+  const index = useMemo(() => buildIndex(subs), [subs]);
+  const choices = useMemo(() => flattenTree(index, form.category_key), [index, form.category_key]);
+  const startLegacy = !initial.subcategory_id && pathOf(initial).length > 0 && !placeItem(index, initial).node;
+  const [section, setSection] = useState(() => {
+    if (initial.subcategory_id) return initial.subcategory_id;
+    const found = placeItem(index, initial).node;
+    return found ? found.id : startLegacy ? LEGACY : '';
+  });
   const [customSection, setCustomSection] = useState('');
   const changeCategory = (key) => {
     set('category_key', key);
-    // keep the section only if the new category already has it; otherwise start with no section
-    const has = items.some((i) => i.category_key === key && pathKey(i) === section);
-    if (section !== NEW_SECTION && !has) setSection('');
+    // a subcategory belongs to one category: keep the choice only if it is still valid in the new category
+    if (section !== NEW_SECTION && section !== LEGACY && !flattenTree(index, key).some(({ node }) => node.id === section)) setSection('');
+    if (section === LEGACY) setSection('');
   };
 
   const save = async () => {
@@ -86,11 +95,18 @@ function ItemForm({ initial, cats, items, onSaved, onClose }) {
     if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(id)) return toast.error('The id may only contain lowercase letters, numbers and single dashes.');
     if (!parsed) return toast.error('Please enter the price, for example 120, 200/380 (half/full) or MRP.');
     let path = [];
+    let subcategoryId = null;
+    let newPath = null;
     if (section === NEW_SECTION) {
-      path = customSection.split('>').map((part) => part.trim()).filter(Boolean);
-      if (!path.length) return toast.error('Type the new section name, or choose “No section”.');
+      newPath = customSection.split(/[>›]/).map(cleanName).filter(Boolean);
+      if (!newPath.length) return toast.error('Type the new subcategory name, or choose “No subcategory”.');
+    } else if (section === LEGACY) {
+      path = pathOf(initial); // unchanged: the database has not been updated for subcategories yet
     } else if (section) {
-      path = sections.get(section) || pathOf(initial);
+      const node = index.byId.get(section);
+      if (!node) return toast.error('That subcategory no longer exists. Reload the page.');
+      subcategoryId = node.id;
+      path = placeItem(index, { category_key: form.category_key, subcategory_id: node.id }).path;
     }
     if (Boolean(form.from) !== Boolean(form.to)) return toast.error('Serving hours need both a start time and an end time (or leave both empty).');
     if (form.availability === 'unavailable' && form.until && !localInputToIso(form.until)) return toast.error('The “unavailable until” date is not valid.');
@@ -105,10 +121,16 @@ function ItemForm({ initial, cats, items, onSaved, onClose }) {
 
     setSaving(true);
     try {
+      if (newPath) {
+        const made = await ensureSubcategoryPath(form.category_key, newPath, subs);
+        subcategoryId = made.node.id;
+        path = newPath.length ? pathNamesOf(made.subs, made.node.id) : [];
+      }
       const row = {
         category_key: form.category_key,
         sub: path.length ? path[path.length - 1] : '',
         path,
+        ...(structureReady ? { subcategory_id: subcategoryId } : {}),
         name,
         price: parsed.price,
         price_text: parsed.price_text,
@@ -169,21 +191,21 @@ function ItemForm({ initial, cats, items, onSaved, onClose }) {
             ))}
           </Select>
         </Field>
-        <Field label="Subcategory / section" hint="Where the item sits on the menu page. Pick an existing section or create a new one.">
-          <Select value={section} onChange={(e) => setSection(e.target.value)}>
-            <option value="">No section (top of the category)</option>
-            {[...sections.keys()].map((k) => (
-              <option key={k} value={k}>
-                {k}
+        <Field label="Subcategory" hint={structureReady ? 'Where the item sits on the menu page. Pick an existing subcategory or create a new one.' : 'Subcategories can be assigned after the database step shown on this page.'}>
+          <Select value={section} onChange={(e) => setSection(e.target.value)} disabled={!structureReady}>
+            <option value="">No subcategory (top of the category)</option>
+            {choices.map(({ node, label, depth }) => (
+              <option key={node.id} value={node.id}>
+                {'\u00A0\u00A0'.repeat(depth)}{label}{node.enabled ? '' : ' (hidden)'}
               </option>
             ))}
-            {startKey && !sections.has(startKey) && <option value={startKey}>{startKey}</option>}
-            <option value={NEW_SECTION}>+ New section…</option>
+            {startLegacy && <option value={LEGACY}>{pathKey(initial)} (current heading)</option>}
+            {structureReady && <option value={NEW_SECTION}>+ New subcategory…</option>}
           </Select>
         </Field>
         {section === NEW_SECTION && (
-          <Field label="New section name" hint="Use › or > between levels, for example: NON-VEG > Chicken > Chicken Main Course" wide>
-            <TextInput value={customSection} onChange={(e) => setCustomSection(e.target.value.replace(/›/g, '>'))} placeholder="e.g. VEG > Veg Desserts" />
+          <Field label="New subcategory name" hint="Use › or > between levels to create nested ones, for example: NON-VEG > Chicken > Chicken Main Course" wide>
+            <TextInput value={customSection} onChange={(e) => setCustomSection(e.target.value)} placeholder="e.g. VEG > Veg Desserts" />
           </Field>
         )}
         <Field label="Vegetarian marker">
@@ -369,49 +391,43 @@ export default function MenuPage() {
   const [sectionFilter, setSectionFilter] = useState('all');
   const [editing, setEditing] = useState(null);
 
-  // Sections of the chosen category (for the section filter).
-  const sectionList = useMemo(() => {
-    if (!data || category === 'all') return [];
-    const keys = new Set();
-    data.items.filter((i) => i.category_key === category).forEach((i) => pathKey(i) && keys.add(pathKey(i)));
-    return [...keys];
+  const [managing, setManaging] = useState(false);
+  const index = useMemo(() => buildIndex(data?.subs || []), [data]);
+
+  // Subcategories of the chosen category (for the filter), in website order.
+  const sectionList = useMemo(() => (data && category !== 'all' ? flattenTree(index, category) : []), [data, index, category]);
+  const legacyHeadings = useMemo(() => {
+    if (!data || category === 'all' || data.structureReady) return [];
+    return [...new Set(data.items.filter((i) => i.category_key === category && pathKey(i)).map(pathKey))];
   }, [data, category]);
 
+  // Items in the order the website shows them: category order, then subcategory order, then the item's own order.
   const rows = useMemo(() => {
     if (!data) return [];
     const q = query.trim().toLowerCase();
-    return data.items.filter(
-      (i) =>
-        (category === 'all' || i.category_key === category) &&
-        (sectionFilter === 'all' || category === 'all' || pathKey(i) === sectionFilter) &&
-        (!q || i.name.toLowerCase().includes(q) || pathKey(i).toLowerCase().includes(q) || (i.price_text || '').toLowerCase().includes(q))
-    );
-  }, [data, category, query, sectionFilter]);
-
-  // Renames one heading for every item under it (including its sub-headings). Nothing else changes.
-  const renameSection = async () => {
-    const oldPath = sectionFilter.split(SEP);
-    const input = window.prompt(`New name for the section “${oldPath[oldPath.length - 1]}”:`, oldPath[oldPath.length - 1]);
-    const name = (input || '').replace(/[>›]/g, ' ').trim();
-    if (!name || name === oldPath[oldPath.length - 1]) return;
-    const affected = data.items.filter((i) => i.category_key === category && pathOf(i).length >= oldPath.length && oldPath.every((part, n) => pathOf(i)[n] === part));
-    try {
-      const results = await Promise.all(
-        affected.map((i) => {
-          const next = [...oldPath.slice(0, -1), name, ...pathOf(i).slice(oldPath.length)];
-          return supabase.from('menu_items').update({ path: next, sub: next[next.length - 1] }).eq('id', i.id);
-        })
+    const rank = new Map(data.cats.map((c, i) => [c.key, i]));
+    const placed = new Map(data.items.map((i) => [i.id, placeItem(data.structureReady ? index : null, i)]));
+    const inFilter = (i) => {
+      if (sectionFilter === 'all' || category === 'all') return true;
+      if (sectionFilter === '__none__') return !i.subcategory_id && !pathKey(i);
+      return data.structureReady ? i.subcategory_id === sectionFilter : pathKey(i) === sectionFilter;
+    };
+    return data.items
+      .filter(
+        (i) =>
+          (category === 'all' || i.category_key === category) &&
+          inFilter(i) &&
+          (!q || i.name.toLowerCase().includes(q) || (placed.get(i.id).path.join(SEP)).toLowerCase().includes(q) || (i.price_text || '').toLowerCase().includes(q))
+      )
+      .sort(
+        (a, b) =>
+          (rank.get(a.category_key) ?? 99) - (rank.get(b.category_key) ?? 99) ||
+          compareOrderKeys(placed.get(a.id).orderKey, placed.get(b.id).orderKey) ||
+          (a.sort_order || 0) - (b.sort_order || 0)
       );
-      const failed = results.find((r) => r.error);
-      if (failed) throw failed.error;
-      await refreshContent();
-      toast.success(`Section renamed on ${affected.length} item${affected.length === 1 ? '' : 's'} and live on the website.`);
-      setSectionFilter([...oldPath.slice(0, -1), name].join(SEP));
-      reload();
-    } catch (e) {
-      toast.error(`Not renamed. ${errorText(e)}`);
-    }
-  };
+  }, [data, index, category, query, sectionFilter]);
+
+  const labelOf = (item) => (data.structureReady ? placeItem(index, item).path.join(SEP) : pathKey(item));
 
   const chooseCategory = (key) => {
     setCategory(key);
@@ -460,7 +476,7 @@ export default function MenuPage() {
   // The two neighbours swap their order numbers. If they happen to share a number, the category is renumbered first.
   const move = async (item, direction) => {
     const inCategory = data.items.filter((i) => i.category_key === item.category_key);
-    const inSection = inCategory.filter((i) => pathKey(i) === pathKey(item));
+    const inSection = inCategory.filter((i) => groupKey(i) === groupKey(item)).sort((x, y) => (x.sort_order || 0) - (y.sort_order || 0));
     const index = inSection.findIndex((i) => i.id === item.id);
     const neighbour = inSection[index + direction];
     if (!neighbour) return;
@@ -499,6 +515,7 @@ export default function MenuPage() {
       </div>
 
       <SyncPanel onDone={reload} />
+      {data && !data.structureReady && <StructureSetup />}
 
       <LoadState loading={loading} error={error} onRetry={reload}>
         {data && (
@@ -516,18 +533,27 @@ export default function MenuPage() {
               </div>
               <TextInput type="search" placeholder="Search items…" value={query} onChange={(e) => setQuery(e.target.value)} aria-label="Search items" />
             </div>
-            {sectionList.length > 0 && (
+            {category !== 'all' && (
               <div className="a-toolbar">
-                <Select value={sectionFilter} onChange={(e) => setSectionFilter(e.target.value)} aria-label="Filter by section">
-                  <option value="all">All sections</option>
-                  {sectionList.map((k) => (
-                    <option key={k} value={k}>
-                      {k}
-                    </option>
-                  ))}
-                </Select>
-                {sectionFilter !== 'all' && <Button small variant="ghost" onClick={renameSection}>Rename this section</Button>}
+                {(sectionList.length > 0 || legacyHeadings.length > 0) && (
+                  <Select value={sectionFilter} onChange={(e) => setSectionFilter(e.target.value)} aria-label="Filter by subcategory">
+                    <option value="all">All subcategories</option>
+                    <option value="__none__">No subcategory</option>
+                    {sectionList.map(({ node, label, depth }) => (
+                      <option key={node.id} value={node.id}>{'\u00A0\u00A0'.repeat(depth)}{label}</option>
+                    ))}
+                    {legacyHeadings.map((k) => (
+                      <option key={k} value={k}>{k}</option>
+                    ))}
+                  </Select>
+                )}
+                {data.structureReady && <Button small variant="ghost" onClick={() => setManaging((v) => !v)}>{managing ? 'Close subcategories' : 'Manage subcategories'}</Button>}
               </div>
+            )}
+            {managing && data.structureReady && category !== 'all' && (
+              <Card title={`Subcategories of ${data.cats.find((c) => c.key === category)?.label}`}>
+                <SubcategoryManager category={data.cats.find((c) => c.key === category)} subs={data.subs.filter((x) => x.category_key === category)} items={data.items} onChanged={reload} />
+              </Card>
             )}
 
             {rows.length === 0 ? (
@@ -542,7 +568,7 @@ export default function MenuPage() {
                     <div className="a-row-main">
                       <strong>{item.name}</strong>
                       <span>
-                        {data.cats.find((c) => c.key === item.category_key)?.label} · {pathKey(item) || 'No subcategory'} · {item.price_text || `₹${Number(item.price)}`}
+                        {data.cats.find((c) => c.key === item.category_key)?.label} · {labelOf(item) || 'No subcategory'} · {item.price_text || `₹${Number(item.price)}`}
                       </span>
                       <span className="a-tags">
                         {!item.available && <em className="is-warn">Disabled (not on website)</em>}
@@ -577,7 +603,7 @@ export default function MenuPage() {
         )}
       </LoadState>
 
-      {editing && data && <ItemForm key={editing.id || 'new'} initial={editing} cats={data.cats} items={data.items} onSaved={reload} onClose={() => { setEditing(null); reload(); }} />}
+      {editing && data && <ItemForm key={editing.id || 'new'} initial={editing} cats={data.cats} items={data.items} subs={data.subs} structureReady={data.structureReady} onSaved={reload} onClose={() => { setEditing(null); reload(); }} />}
     </>
   );
 }
